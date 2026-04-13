@@ -1,5 +1,5 @@
 import { Head, router } from '@inertiajs/react';
-import { CircleCheck, CircleX, Eye, Pencil, Plus, Trash2, UserCog, Users } from 'lucide-react';
+import { CircleCheck, CircleX, Eye, Pencil, Plus, Shield, Trash2, UserCog, Users } from 'lucide-react';
 import UserController from '@/actions/App/Http/Controllers/UserController';
 import { Can } from '@/components/can';
 import { DataTable } from '@/components/data-table/data-table';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useCan } from '@/hooks/use-permission';
 import { start as impersonateStart } from '@/routes/impersonate';
+import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
 import { bulkAction as usersBulkAction, exportMethod as usersExport } from '@/routes/users';
 import type { DataTableColumn, DataTableFilter, PaginatedData, RowAction } from '@/types/datatable';
@@ -206,12 +207,23 @@ export default function UsersIndex({ users, roles }: Props) {
                         </div>
                     </div>
 
-                    <Can permission="user.create">
-                        <Button onClick={() => router.visit(UserController.create.url())}>
-                            <Plus className="mr-1 h-4 w-4" />
-                            Add User
-                        </Button>
-                    </Can>
+                    <div className="flex items-center gap-2">
+                        <Can permission="role.view">
+                            <Button
+                                variant="outline"
+                                onClick={() => router.visit(rolesIndex())}
+                            >
+                                <Shield className="mr-1 h-4 w-4" />
+                                Manage Roles
+                            </Button>
+                        </Can>
+                        <Can permission="user.create">
+                            <Button onClick={() => router.visit(UserController.create.url())}>
+                                <Plus className="mr-1 h-4 w-4" />
+                                Add User
+                            </Button>
+                        </Can>
+                    </div>
                 </div>
 
                 <DataTable

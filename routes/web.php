@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ColumnPreferenceController;
 use App\Http\Controllers\ImpersonationController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -15,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // User Management
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class)->except(['show']);
     Route::post('users/bulk-action', [UserController::class, 'bulkAction'])->name('users.bulk-action');
     Route::get('users-export', [UserController::class, 'export'])->name('users.export');
 
