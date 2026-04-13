@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\FeatureFlagService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,15 +38,21 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user();
+        $featureFlags = app(FeatureFlagService::class);
+
+        $logoPath = settings('app.logo_path');
+        $logoUrl = is_string($logoPath) && $logoPath !== '' ? Storage::disk('public')->url($logoPath) : null;
 
         return [
             ...parent::share($request),
-            'name' => config('app.name'),
+            'name' => settings('app.name', config('app.name')),
+            'appLogoUrl' => $logoUrl,
             'auth' => [
                 'user' => $user,
             ],
             'permissions' => $user ? $user->getAllPermissions()->pluck('name')->toArray() : [],
             'roles' => $user ? $user->getRoleNames()->toArray() : [],
+            'features' => $featureFlags->enabledKeysForUser($user),
             'impersonating' => $request->session()->has('impersonate.original_id') ? [
                 'original_user_id' => $request->session()->get('impersonate.original_id'),
                 'original_user_name' => $request->session()->get('impersonate.original_name'),

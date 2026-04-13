@@ -40,7 +40,8 @@
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <meta name="app-name" content="{{ settings('app.name', config('app.name', 'Laravel')) }}">
+            <title>{{ settings('app.name', config('app.name', 'Laravel')) }}</title>
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">
