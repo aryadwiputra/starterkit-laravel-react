@@ -16,16 +16,15 @@ test('security page is displayed', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->withSession(['auth.password_confirmed_at' => time()])
-        ->get(route('security.edit'))
+        ->get(route('profile.edit'))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('settings/security')
+            ->component('profile')
             ->where('canManageTwoFactor', true)
             ->where('twoFactorEnabled', false),
         );
 });
 
-test('security page requires password confirmation when enabled', function () {
+test('profile page does not require password confirmation when enabled', function () {
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 
     $user = User::factory()->create();
@@ -36,12 +35,12 @@ test('security page requires password confirmation when enabled', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->get(route('security.edit'));
+        ->get(route('profile.edit'));
 
-    $response->assertRedirect(route('password.confirm'));
+    $response->assertOk();
 });
 
-test('security page does not require password confirmation when disabled', function () {
+test('profile page renders when confirmation is disabled', function () {
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 
     $user = User::factory()->create();
@@ -52,14 +51,14 @@ test('security page does not require password confirmation when disabled', funct
     ]);
 
     $this->actingAs($user)
-        ->get(route('security.edit'))
+        ->get(route('profile.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('settings/security'),
+            ->component('profile'),
         );
 });
 
-test('security page renders without two factor when feature is disabled', function () {
+test('profile page renders without two factor when feature is disabled', function () {
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 
     config(['fortify.features' => []]);
@@ -67,10 +66,10 @@ test('security page renders without two factor when feature is disabled', functi
     $user = User::factory()->create();
 
     $this->actingAs($user)
-        ->get(route('security.edit'))
+        ->get(route('profile.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('settings/security')
+            ->component('profile')
             ->where('canManageTwoFactor', false)
             ->missing('twoFactorEnabled')
             ->missing('requiresConfirmation'),
@@ -82,7 +81,7 @@ test('password can be updated', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(route('security.edit'))
+        ->from(route('profile.edit').'#security')
         ->put(route('user-password.update'), [
             'current_password' => 'password',
             'password' => 'new-password',
@@ -91,7 +90,7 @@ test('password can be updated', function () {
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('security.edit'));
+        ->assertRedirect(route('profile.edit').'#security');
 
     expect(Hash::check('new-password', $user->refresh()->password))->toBeTrue();
 });
@@ -101,7 +100,7 @@ test('correct password must be provided to update password', function () {
 
     $response = $this
         ->actingAs($user)
-        ->from(route('security.edit'))
+        ->from(route('profile.edit').'#security')
         ->put(route('user-password.update'), [
             'current_password' => 'wrong-password',
             'password' => 'new-password',
@@ -110,5 +109,13 @@ test('correct password must be provided to update password', function () {
 
     $response
         ->assertSessionHasErrors('current_password')
-        ->assertRedirect(route('security.edit'));
+        ->assertRedirect(route('profile.edit').'#security');
+});
+
+test('legacy settings security route redirects to profile hash', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->get('/settings/security')
+        ->assertRedirect('/profile#security');
 });
