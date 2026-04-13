@@ -4,13 +4,17 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUrl } from '@/hooks/use-current-url';
+import { useCan } from '@/hooks/use-permission';
 import { cn, toUrl } from '@/lib/utils';
+import { edit as editAppSettings } from '@/routes/app-settings';
 import { edit as editAppearance } from '@/routes/appearance';
+import { edit as editMailSettings } from '@/routes/mail-settings';
+import { index as featureFlagsIndex } from '@/routes/feature-flags';
 import { edit } from '@/routes/profile';
 import { edit as editSecurity } from '@/routes/security';
 import type { NavItem } from '@/types';
 
-const sidebarNavItems: NavItem[] = [
+const accountNavItems: NavItem[] = [
     {
         title: 'Profile',
         href: edit(),
@@ -30,6 +34,15 @@ const sidebarNavItems: NavItem[] = [
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
     const { isCurrentOrParentUrl } = useCurrentUrl();
+    const canManageApp = useCan('settings.app.manage');
+    const canManageMail = useCan('settings.mail.manage');
+    const canManageFlags = useCan('settings.flags.manage');
+
+    const adminNavItems: NavItem[] = [
+        ...(canManageApp ? [{ title: 'App', href: editAppSettings(), icon: null }] : []),
+        ...(canManageMail ? [{ title: 'Mail', href: editMailSettings(), icon: null }] : []),
+        ...(canManageFlags ? [{ title: 'Feature flags', href: featureFlagsIndex(), icon: null }] : []),
+    ];
 
     return (
         <div className="px-4 py-6">
@@ -44,7 +57,10 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                         className="flex flex-col space-y-1 space-x-0"
                         aria-label="Settings"
                     >
-                        {sidebarNavItems.map((item, index) => (
+                        <p className="px-2 pt-2 pb-1 text-xs font-medium text-muted-foreground">
+                            Account
+                        </p>
+                        {accountNavItems.map((item, index) => (
                             <Button
                                 key={`${toUrl(item.href)}-${index}`}
                                 size="sm"
@@ -62,6 +78,27 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                                 </Link>
                             </Button>
                         ))}
+
+                        {adminNavItems.length > 0 && (
+                            <>
+                                <p className="mt-4 px-2 pt-2 pb-1 text-xs font-medium text-muted-foreground">
+                                    Admin
+                                </p>
+                                {adminNavItems.map((item, index) => (
+                                    <Button
+                                        key={`${toUrl(item.href)}-admin-${index}`}
+                                        size="sm"
+                                        variant="ghost"
+                                        asChild
+                                        className={cn('w-full justify-start', {
+                                            'bg-muted': isCurrentOrParentUrl(item.href),
+                                        })}
+                                    >
+                                        <Link href={item.href}>{item.title}</Link>
+                                    </Button>
+                                ))}
+                            </>
+                        )}
                     </nav>
                 </aside>
 

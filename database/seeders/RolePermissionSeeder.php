@@ -17,6 +17,7 @@ class RolePermissionSeeder extends Seeder
     private const PERMISSIONS = [
         'user' => ['view', 'create', 'edit', 'delete', 'impersonate'],
         'role' => ['view', 'create', 'edit', 'delete'],
+        'settings' => ['app.manage', 'mail.manage', 'flags.manage'],
     ];
 
     /**
@@ -31,6 +32,9 @@ class RolePermissionSeeder extends Seeder
             'user.edit',
             'user.delete',
             'role.view',
+            'settings.app.manage',
+            'settings.mail.manage',
+            'settings.flags.manage',
         ],
         'user' => [],
     ];
