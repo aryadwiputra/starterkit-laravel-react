@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { router } from '@inertiajs/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { store as storeColumnPreferences } from '@/routes/column-preferences';
 import type { DataTableColumn, SortConfig } from '@/types/datatable';
 

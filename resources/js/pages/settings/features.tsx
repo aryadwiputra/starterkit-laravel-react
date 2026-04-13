@@ -52,6 +52,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
             setSelectedEnvironments([]);
             setSelectedRoles([]);
             setSelectedUsers([]);
+
             return;
         }
 
@@ -66,6 +67,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
         const timeout = setTimeout(async () => {
             if (userSearch.trim().length < 2) {
                 setUserResults([]);
+
                 return;
             }
 

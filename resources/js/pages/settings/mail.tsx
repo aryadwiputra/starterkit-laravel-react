@@ -48,6 +48,7 @@ export default function MailSettings({ settings }: Props) {
 
     const providerDescription = useMemo(() => {
         const found = providers.find((p) => p.value === provider);
+
         return found?.label ?? provider;
     }, [provider]);
 
