@@ -4,6 +4,7 @@ import MailSettingsController from '@/actions/App/Http/Controllers/Settings/Mail
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -58,12 +59,13 @@ export default function MailSettings({ settings }: Props) {
 
             <h1 className="sr-only">Mail settings</h1>
 
-            <div className="space-y-6">
-                <Heading
-                    variant="small"
-                    title="Mail settings"
-                    description="Configure email delivery without editing .env"
-                />
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <div className="flex items-start justify-between">
+                    <Heading
+                        title="Mail settings"
+                        description="Configure providers and verify delivery."
+                    />
+                </div>
 
                 <Form
                     {...MailSettingsController.update.form()}
@@ -72,58 +74,72 @@ export default function MailSettings({ settings }: Props) {
                 >
                     {({ processing, errors }) => (
                         <>
-                            <div className="space-y-4 rounded-lg border p-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="default">Provider</Label>
-                                    <Select
-                                        name="default"
-                                        defaultValue={provider}
-                                        onValueChange={setProvider}
-                                    >
-                                        <SelectTrigger id="default">
-                                            <SelectValue placeholder="Select provider" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {providers.map((p) => (
-                                                <SelectItem key={p.value} value={p.value}>
-                                                    {p.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <p className="text-sm text-muted-foreground">
-                                        Active provider: {providerDescription}
-                                    </p>
-                                    <InputError message={errors.default} />
-                                </div>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>General</CardTitle>
+                                    <CardDescription>
+                                        Choose a provider and default sender details.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="default">Provider</Label>
+                                        <Select
+                                            name="default"
+                                            defaultValue={provider}
+                                            onValueChange={setProvider}
+                                        >
+                                            <SelectTrigger id="default">
+                                                <SelectValue placeholder="Select provider" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {providers.map((p) => (
+                                                    <SelectItem key={p.value} value={p.value}>
+                                                        {p.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <p className="text-sm text-muted-foreground">
+                                            Active provider: {providerDescription}
+                                        </p>
+                                        <InputError message={errors.default} />
+                                    </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="from_address">From address</Label>
-                                    <Input
-                                        id="from_address"
-                                        name="from_address"
-                                        type="email"
-                                        defaultValue={settings.from_address || ''}
-                                        placeholder="noreply@example.com"
-                                    />
-                                    <InputError message={errors.from_address} />
-                                </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="from_address">From address</Label>
+                                        <Input
+                                            id="from_address"
+                                            name="from_address"
+                                            type="email"
+                                            defaultValue={settings.from_address || ''}
+                                            placeholder="noreply@example.com"
+                                        />
+                                        <InputError message={errors.from_address} />
+                                    </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="from_name">From name</Label>
-                                    <Input
-                                        id="from_name"
-                                        name="from_name"
-                                        defaultValue={settings.from_name || ''}
-                                        placeholder="My App"
-                                    />
-                                    <InputError message={errors.from_name} />
-                                </div>
-                            </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="from_name">From name</Label>
+                                        <Input
+                                            id="from_name"
+                                            name="from_name"
+                                            defaultValue={settings.from_name || ''}
+                                            placeholder="My App"
+                                        />
+                                        <InputError message={errors.from_name} />
+                                    </div>
+                                </CardContent>
+                            </Card>
 
                             {provider === 'smtp' && (
-                                <div className="space-y-4 rounded-lg border p-4">
-                                    <h2 className="text-sm font-medium">SMTP</h2>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>SMTP</CardTitle>
+                                        <CardDescription>
+                                            Connect a custom SMTP relay.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="smtp_scheme">Scheme</Label>
@@ -187,12 +203,19 @@ export default function MailSettings({ settings }: Props) {
                                         </p>
                                         <InputError message={errors.smtp_password} />
                                     </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             )}
 
                             {provider === 'mailgun' && (
-                                <div className="space-y-4 rounded-lg border p-4">
-                                    <h2 className="text-sm font-medium">Mailgun</h2>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Mailgun</CardTitle>
+                                        <CardDescription>
+                                            Send email via Mailgun HTTP API.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="mailgun_domain">Domain</Label>
@@ -229,12 +252,19 @@ export default function MailSettings({ settings }: Props) {
                                         />
                                         <InputError message={errors.mailgun_endpoint} />
                                     </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             )}
 
                             {provider === 'ses' && (
-                                <div className="space-y-4 rounded-lg border p-4">
-                                    <h2 className="text-sm font-medium">AWS SES</h2>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>AWS SES</CardTitle>
+                                        <CardDescription>
+                                            Authenticate with AWS credentials and region.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="ses_key">Access key</Label>
@@ -274,12 +304,19 @@ export default function MailSettings({ settings }: Props) {
                                         />
                                         <InputError message={errors.ses_region} />
                                     </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             )}
 
                             {provider === 'resend' && (
-                                <div className="space-y-4 rounded-lg border p-4">
-                                    <h2 className="text-sm font-medium">Resend</h2>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Resend</CardTitle>
+                                        <CardDescription>
+                                            Send emails via Resend API.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="resend_key">API key</Label>
@@ -294,12 +331,19 @@ export default function MailSettings({ settings }: Props) {
                                         </p>
                                         <InputError message={errors.resend_key} />
                                     </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             )}
 
                             {provider === 'postmark' && (
-                                <div className="space-y-4 rounded-lg border p-4">
-                                    <h2 className="text-sm font-medium">Postmark</h2>
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Postmark</CardTitle>
+                                        <CardDescription>
+                                            Configure your Postmark server token.
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="postmark_key">Server token</Label>
@@ -314,7 +358,8 @@ export default function MailSettings({ settings }: Props) {
                                         </p>
                                         <InputError message={errors.postmark_key} />
                                     </div>
-                                </div>
+                                    </CardContent>
+                                </Card>
                             )}
 
                             <div className="flex items-center gap-4">
@@ -324,27 +369,34 @@ export default function MailSettings({ settings }: Props) {
                     )}
                 </Form>
 
-                <div className="space-y-4 rounded-lg border p-4">
-                    <h2 className="text-sm font-medium">Send test email</h2>
-                    <Form
-                        {...MailSettingsController.test.form()}
-                        className="space-y-4"
-                        options={{ preserveScroll: true }}
-                    >
-                        {({ processing, errors }) => (
-                            <>
-                                <div className="grid gap-2">
-                                    <Label htmlFor="to">To</Label>
-                                    <Input id="to" name="to" type="email" placeholder="you@example.com" required />
-                                    <InputError message={errors.to} />
-                                </div>
-                                <Button disabled={processing} variant="secondary">
-                                    Send test email
-                                </Button>
-                            </>
-                        )}
-                    </Form>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Send test email</CardTitle>
+                        <CardDescription>
+                            Confirm the selected provider can deliver emails.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Form
+                            {...MailSettingsController.test.form()}
+                            className="space-y-4"
+                            options={{ preserveScroll: true }}
+                        >
+                            {({ processing, errors }) => (
+                                <>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="to">To</Label>
+                                        <Input id="to" name="to" type="email" placeholder="you@example.com" required />
+                                        <InputError message={errors.to} />
+                                    </div>
+                                    <Button disabled={processing} variant="secondary">
+                                        Send test email
+                                    </Button>
+                                </>
+                            )}
+                        </Form>
+                    </CardContent>
+                </Card>
             </div>
         </>
     );
@@ -358,4 +410,3 @@ MailSettings.layout = {
         },
     ],
 };
-
