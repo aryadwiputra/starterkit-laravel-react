@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'title' => 'User Management',
+    'description' => 'Manage user accounts, roles, and permissions',
+    'actions' => [
+        'new' => 'Add User',
+        'view' => 'View Details',
+        'impersonate' => 'Impersonate',
+        'delete_confirm' => 'Are you sure you want to delete :name?',
+        'activate' => 'Activate',
+        'deactivate' => 'Deactivate',
+        'bulk_delete_confirm' => 'Are you sure you want to delete these users? This action uses soft delete.',
+        'manage_roles' => 'Manage Roles',
+    ],
+    'create' => [
+        'title' => 'Create User',
+        'description' => 'Add a new user to the system',
+        'name_placeholder' => 'Full name',
+        'email_placeholder' => 'Email address',
+        'password_placeholder' => 'Password',
+        'confirm_password_placeholder' => 'Confirm password',
+        'role_placeholder' => 'Select a role',
+        'submit' => 'Create User',
+    ],
+    'edit' => [
+        'title' => 'Edit User: :name',
+        'description' => 'Update user information and role',
+        'name_placeholder' => 'Full name',
+        'email_placeholder' => 'Email',
+        'password' => 'Password (leave blank to keep current)',
+        'password_placeholder' => 'New password',
+        'confirm_password_placeholder' => 'Confirm new password',
+        'role_placeholder' => 'Select a role',
+        'submit' => 'Update User',
+        'breadcrumb' => 'Edit User',
+    ],
+    'show' => [
+        'joined' => 'Joined :date',
+        'activity_title' => 'Activity Log',
+        'activity_empty' => 'No activity recorded yet.',
+        'breadcrumb' => 'User Details',
+    ],
+    'toast' => [
+        'created' => 'User created successfully.',
+        'updated' => 'User updated successfully.',
+        'deleted' => 'User deleted successfully.',
+        'activated' => ':count users activated.',
+        'deactivated' => ':count users deactivated.',
+        'bulk_deleted' => 'Selected users deleted.',
+    ],
+    'impersonation' => [
+        'super_admin' => 'Cannot impersonate a super-admin.',
+        'self' => 'Cannot impersonate yourself.',
+        'started' => 'Now impersonating :name.',
+        'stopped' => 'Returned to your account.',
+    ],
+];

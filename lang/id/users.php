@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'title' => 'Manajemen Pengguna',
+    'description' => 'Kelola akun pengguna, peran, dan izin',
+    'actions' => [
+        'new' => 'Tambah Pengguna',
+        'view' => 'Lihat Detail',
+        'impersonate' => 'Impersonasi',
+        'delete_confirm' => 'Yakin ingin menghapus :name?',
+        'activate' => 'Aktifkan',
+        'deactivate' => 'Nonaktifkan',
+        'bulk_delete_confirm' => 'Yakin ingin menghapus pengguna terpilih? Tindakan ini menggunakan soft delete.',
+        'manage_roles' => 'Kelola Peran',
+    ],
+    'create' => [
+        'title' => 'Buat Pengguna',
+        'description' => 'Tambah pengguna baru ke sistem',
+        'name_placeholder' => 'Nama lengkap',
+        'email_placeholder' => 'Alamat email',
+        'password_placeholder' => 'Kata sandi',
+        'confirm_password_placeholder' => 'Konfirmasi kata sandi',
+        'role_placeholder' => 'Pilih peran',
+        'submit' => 'Buat Pengguna',
+    ],
+    'edit' => [
+        'title' => 'Edit Pengguna: :name',
+        'description' => 'Perbarui informasi dan peran pengguna',
+        'name_placeholder' => 'Nama lengkap',
+        'email_placeholder' => 'Email',
+        'password' => 'Kata sandi (kosongkan untuk mempertahankan)',
+        'password_placeholder' => 'Kata sandi baru',
+        'confirm_password_placeholder' => 'Konfirmasi kata sandi baru',
+        'role_placeholder' => 'Pilih peran',
+        'submit' => 'Perbarui Pengguna',
+        'breadcrumb' => 'Edit Pengguna',
+    ],
+    'show' => [
+        'joined' => 'Bergabung :date',
+        'activity_title' => 'Log Aktivitas',
+        'activity_empty' => 'Belum ada aktivitas.',
+        'breadcrumb' => 'Detail Pengguna',
+    ],
+    'toast' => [
+        'created' => 'Pengguna berhasil dibuat.',
+        'updated' => 'Pengguna berhasil diperbarui.',
+        'deleted' => 'Pengguna berhasil dihapus.',
+        'activated' => ':count pengguna diaktifkan.',
+        'deactivated' => ':count pengguna dinonaktifkan.',
+        'bulk_deleted' => 'Pengguna terpilih dihapus.',
+    ],
+    'impersonation' => [
+        'super_admin' => 'Tidak dapat mengimpersonasi super-admin.',
+        'self' => 'Tidak dapat mengimpersonasi diri sendiri.',
+        'started' => 'Sekarang mengimpersonasi :name.',
+        'stopped' => 'Kembali ke akun Anda.',
+    ],
+];
