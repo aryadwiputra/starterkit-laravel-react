@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as rolesIndex } from '@/routes/roles';
 
 type PermissionGroup = {
@@ -30,6 +31,7 @@ export default function EditRole({ role, permission_groups }: Props) {
     const [selectedPermissions, setSelectedPermissions] = useState<string[]>(
         role.permissions.map((permission) => permission.name),
     );
+    const { t } = useTranslation();
 
     function togglePermission(permission: string, checked: boolean) {
         setSelectedPermissions((prev) =>
@@ -39,13 +41,13 @@ export default function EditRole({ role, permission_groups }: Props) {
 
     return (
         <>
-            <Head title={`Edit ${role.name}`} />
+            <Head title={t('roles.edit.title', { name: role.name })} />
 
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <Heading
                     variant="small"
-                    title={`Edit Role: ${role.name}`}
-                    description="Update role name and assigned permissions."
+                    title={t('roles.edit.title', { name: role.name })}
+                    description={t('roles.edit.description')}
                 />
 
                 <Form
@@ -56,14 +58,14 @@ export default function EditRole({ role, permission_groups }: Props) {
                         <>
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Role details</CardTitle>
+                                    <CardTitle>{t('roles.edit.sections.details.title')}</CardTitle>
                                     <CardDescription>
-                                        Update the role name.
+                                        {t('roles.edit.sections.details.description')}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="name">Name</Label>
+                                        <Label htmlFor="name">{t('common.name')}</Label>
                                         <Input
                                             id="name"
                                             name="name"
@@ -77,16 +79,16 @@ export default function EditRole({ role, permission_groups }: Props) {
 
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Permissions</CardTitle>
+                                    <CardTitle>{t('roles.edit.sections.permissions.title')}</CardTitle>
                                     <CardDescription>
-                                        Adjust the capabilities available to this role.
+                                        {t('roles.edit.sections.permissions.description')}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-6">
                                     {permission_groups.map((group) => (
                                         <div key={group.group} className="space-y-3">
                                             <p className="text-sm font-medium capitalize">
-                                                {group.group}
+                                                {t(`roles.permissions.${group.group}`)}
                                             </p>
                                             <div className="grid gap-3 sm:grid-cols-2">
                                                 {group.permissions.map((permission) => (
@@ -121,10 +123,10 @@ export default function EditRole({ role, permission_groups }: Props) {
                             </Card>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Update Role</Button>
+                                <Button disabled={processing}>{t('roles.edit.submit')}</Button>
                                 <Link href={rolesIndex()}>
                                     <Button type="button" variant="outline">
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Button>
                                 </Link>
                             </div>
@@ -138,7 +140,7 @@ export default function EditRole({ role, permission_groups }: Props) {
 
 EditRole.layout = {
     breadcrumbs: [
-        { title: 'Roles', href: rolesIndex() },
-        { title: 'Edit Role', href: '#' },
+        { title: 'roles.title', href: rolesIndex() },
+        { title: 'roles.edit.breadcrumb', href: '#' },
     ],
 };

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useCan } from '@/hooks/use-permission';
+import { useTranslation } from '@/hooks/use-translation';
 import { start as impersonateStart } from '@/routes/impersonate';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
@@ -32,11 +33,12 @@ export default function UsersIndex({ users, roles }: Props) {
     const canEdit = useCan('user.edit');
     const canDelete = useCan('user.delete');
     const canImpersonate = useCan('user.impersonate');
+    const { t } = useTranslation();
 
     const columns: DataTableColumn<UserRow>[] = [
         {
             key: 'name',
-            label: 'Name',
+            label: t('common.name'),
             sortable: true,
             render: (user) => (
                 <div className="flex items-center gap-3">
@@ -59,12 +61,12 @@ export default function UsersIndex({ users, roles }: Props) {
         },
         {
             key: 'email',
-            label: 'Email',
+            label: t('common.email'),
             sortable: true,
         },
         {
             key: 'roles',
-            label: 'Role',
+            label: t('common.role'),
             sortable: false,
             render: (user) => (
                 <div className="flex gap-1">
@@ -78,17 +80,17 @@ export default function UsersIndex({ users, roles }: Props) {
         },
         {
             key: 'is_active',
-            label: 'Status',
+            label: t('common.status'),
             sortable: true,
             render: (user) => (
                 <Badge variant={user.is_active ? 'default' : 'destructive'} className="gap-1">
                     {user.is_active ? (
                         <>
-                            <CircleCheck className="h-3 w-3" /> Active
+                            <CircleCheck className="h-3 w-3" /> {t('common.active')}
                         </>
                     ) : (
                         <>
-                            <CircleX className="h-3 w-3" /> Inactive
+                            <CircleX className="h-3 w-3" /> {t('common.inactive')}
                         </>
                     )}
                 </Badge>
@@ -96,7 +98,7 @@ export default function UsersIndex({ users, roles }: Props) {
         },
         {
             key: 'created_at',
-            label: 'Created',
+            label: t('common.created'),
             sortable: true,
             render: (user) => <span className="text-muted-foreground">{new Date(user.created_at).toLocaleDateString()}</span>,
         },
@@ -105,15 +107,15 @@ export default function UsersIndex({ users, roles }: Props) {
     const tableFilters: DataTableFilter[] = [
         {
             key: 'role',
-            label: 'Roles',
+            label: t('common.roles'),
             options: roles.map((role) => ({ label: role, value: role })),
         },
         {
             key: 'is_active',
-            label: 'Status',
+            label: t('common.status'),
             options: [
-                { label: 'Active', value: '1' },
-                { label: 'Inactive', value: '0' },
+                { label: t('common.active'), value: '1' },
+                { label: t('common.inactive'), value: '0' },
             ],
         },
     ];
@@ -121,20 +123,20 @@ export default function UsersIndex({ users, roles }: Props) {
     const rowActions: RowAction<UserRow>[] = [
         {
             key: 'view',
-            label: 'View Details',
+            label: t('users.actions.view'),
             icon: <Eye className="mr-2 h-4 w-4" />,
             onClick: (user) => router.visit(UserController.show.url({ user: user.id })),
         },
         {
             key: 'edit',
-            label: 'Edit',
+            label: t('common.edit'),
             icon: <Pencil className="mr-2 h-4 w-4" />,
             onClick: (user) => router.visit(UserController.edit.url({ user: user.id })),
             visible: () => canEdit,
         },
         {
             key: 'impersonate',
-            label: 'Impersonate',
+            label: t('users.actions.impersonate'),
             icon: <UserCog className="mr-2 h-4 w-4" />,
             onClick: (user) =>
                 router.post(impersonateStart.url(user.id), {}, {}),
@@ -142,11 +144,11 @@ export default function UsersIndex({ users, roles }: Props) {
         },
         {
             key: 'delete',
-            label: 'Delete',
+            label: t('common.delete'),
             icon: <Trash2 className="mr-2 h-4 w-4" />,
             variant: 'destructive',
             onClick: (user) => {
-                if (confirm(`Are you sure you want to delete ${user.name}?`)) {
+                if (confirm(t('users.actions.delete_confirm', { name: user.name }))) {
                     router.delete(UserController.destroy.url({ user: user.id }));
                 }
             },
@@ -159,12 +161,12 @@ export default function UsersIndex({ users, roles }: Props) {
             ? [
                   {
                       key: 'activate',
-                      label: 'Activate',
+                      label: t('users.actions.activate'),
                       icon: <CircleCheck className="mr-1 h-4 w-4" />,
                   },
                   {
                       key: 'deactivate',
-                      label: 'Deactivate',
+                      label: t('users.actions.deactivate'),
                       icon: <CircleX className="mr-1 h-4 w-4" />,
                   },
               ]
@@ -173,11 +175,11 @@ export default function UsersIndex({ users, roles }: Props) {
             ? [
                   {
                       key: 'delete',
-                      label: 'Delete',
+                      label: t('common.delete'),
                       icon: <Trash2 className="mr-1 h-4 w-4" />,
                       variant: 'destructive' as const,
                       requireConfirm: true,
-                      confirmMessage: 'Are you sure you want to delete these users? This action uses soft delete.',
+                      confirmMessage: t('users.actions.bulk_delete_confirm'),
                   },
               ]
             : []),
@@ -193,7 +195,7 @@ export default function UsersIndex({ users, roles }: Props) {
 
     return (
         <>
-            <Head title="User Management" />
+            <Head title={t('users.title')} />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-center justify-between">
@@ -202,8 +204,8 @@ export default function UsersIndex({ users, roles }: Props) {
                             <Users className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-lg font-semibold">User Management</h1>
-                            <p className="text-sm text-muted-foreground">Manage user accounts, roles, and permissions</p>
+                            <h1 className="text-lg font-semibold">{t('users.title')}</h1>
+                            <p className="text-sm text-muted-foreground">{t('users.description')}</p>
                         </div>
                     </div>
 
@@ -214,13 +216,13 @@ export default function UsersIndex({ users, roles }: Props) {
                                 onClick={() => router.visit(rolesIndex())}
                             >
                                 <Shield className="mr-1 h-4 w-4" />
-                                Manage Roles
+                                {t('users.actions.manage_roles')}
                             </Button>
                         </Can>
                         <Can permission="user.create">
                             <Button onClick={() => router.visit(UserController.create.url())}>
                                 <Plus className="mr-1 h-4 w-4" />
-                                Add User
+                                {t('users.actions.new')}
                             </Button>
                         </Can>
                     </div>
@@ -247,7 +249,7 @@ export default function UsersIndex({ users, roles }: Props) {
 UsersIndex.layout = {
     breadcrumbs: [
         {
-            title: 'User Management',
+            title: 'users.title',
             href: usersIndex(),
         },
     ],

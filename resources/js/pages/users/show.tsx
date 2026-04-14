@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as usersIndex } from '@/routes/users';
 import type { User } from '@/types';
 
@@ -23,6 +24,8 @@ type Props = {
 };
 
 export default function ShowUser({ user, activities }: Props) {
+    const { t } = useTranslation();
+
     return (
         <>
             <Head title={user.name} />
@@ -64,12 +67,16 @@ export default function ShowUser({ user, activities }: Props) {
 
                             <div className="flex items-center gap-3 text-sm">
                                 <UserCog className="h-4 w-4 text-muted-foreground" />
-                                <Badge variant={user.is_active ? 'default' : 'destructive'}>{user.is_active ? 'Active' : 'Inactive'}</Badge>
+                                <Badge variant={user.is_active ? 'default' : 'destructive'}>
+                                    {user.is_active ? t('common.active') : t('common.inactive')}
+                                </Badge>
                             </div>
 
                             <div className="flex items-center gap-3 text-sm">
                                 <CalendarDays className="h-4 w-4 text-muted-foreground" />
-                                <span className="text-muted-foreground">Joined {new Date(user.created_at).toLocaleDateString()}</span>
+                                <span className="text-muted-foreground">
+                                    {t('users.show.joined', { date: new Date(user.created_at).toLocaleDateString() })}
+                                </span>
                             </div>
                         </CardContent>
                     </Card>
@@ -79,12 +86,14 @@ export default function ShowUser({ user, activities }: Props) {
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
                                 <Activity className="h-5 w-5" />
-                                Activity Log
+                                {t('users.show.activity_title')}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             {activities.length === 0 ? (
-                                <p className="py-8 text-center text-muted-foreground">No activity recorded yet.</p>
+                                <p className="py-8 text-center text-muted-foreground">
+                                    {t('users.show.activity_empty')}
+                                </p>
                             ) : (
                                 <div className="space-y-4">
                                     {activities.map((activity) => (
@@ -117,7 +126,7 @@ export default function ShowUser({ user, activities }: Props) {
 
 ShowUser.layout = {
     breadcrumbs: [
-        { title: 'User Management', href: usersIndex() },
-        { title: 'User Details', href: '#' },
+        { title: 'users.title', href: usersIndex() },
+        { title: 'users.show.breadcrumb', href: '#' },
     ],
 };

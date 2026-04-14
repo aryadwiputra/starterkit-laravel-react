@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as usersIndex } from '@/routes/users';
 
 type Props = {
@@ -13,12 +14,18 @@ type Props = {
 };
 
 export default function CreateUser({ roles }: Props) {
+    const { t } = useTranslation();
+
     return (
         <>
-            <Head title="Create User" />
+            <Head title={t('users.create.title')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
-                <Heading variant="small" title="Create New User" description="Add a new user to the system" />
+                <Heading
+                    variant="small"
+                    title={t('users.create.title')}
+                    description={t('users.create.description')}
+                />
 
                 <Form
                     {...UserController.store.form()}
@@ -27,40 +34,40 @@ export default function CreateUser({ roles }: Props) {
                     {({ processing, errors }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input id="name" name="name" required autoComplete="name" placeholder="Full name" />
+                                <Label htmlFor="name">{t('common.name')}</Label>
+                                <Input id="name" name="name" required autoComplete="name" placeholder={t('users.create.name_placeholder')} />
                                 <InputError message={errors.name} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input id="email" type="email" name="email" required autoComplete="email" placeholder="Email address" />
+                                <Label htmlFor="email">{t('common.email')}</Label>
+                                <Input id="email" type="email" name="email" required autoComplete="email" placeholder={t('users.create.email_placeholder')} />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input id="password" type="password" name="password" required autoComplete="new-password" placeholder="Password" />
+                                <Label htmlFor="password">{t('common.password')}</Label>
+                                <Input id="password" type="password" name="password" required autoComplete="new-password" placeholder={t('users.create.password_placeholder')} />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">Confirm Password</Label>
+                                <Label htmlFor="password_confirmation">{t('common.confirm_password')}</Label>
                                 <Input
                                     id="password_confirmation"
                                     type="password"
                                     name="password_confirmation"
                                     required
                                     autoComplete="new-password"
-                                    placeholder="Confirm password"
+                                    placeholder={t('users.create.confirm_password_placeholder')}
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="role">Role</Label>
+                                <Label htmlFor="role">{t('common.role')}</Label>
                                 <Select name="role" defaultValue="user">
                                     <SelectTrigger id="role">
-                                        <SelectValue placeholder="Select a role" />
+                                        <SelectValue placeholder={t('users.create.role_placeholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {roles.map((role) => (
@@ -74,10 +81,10 @@ export default function CreateUser({ roles }: Props) {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <Button disabled={processing}>Create User</Button>
+                                <Button disabled={processing}>{t('users.create.submit')}</Button>
                                 <Link href={usersIndex()}>
                                     <Button type="button" variant="outline">
-                                        Cancel
+                                        {t('common.cancel')}
                                     </Button>
                                 </Link>
                             </div>
@@ -91,7 +98,7 @@ export default function CreateUser({ roles }: Props) {
 
 CreateUser.layout = {
     breadcrumbs: [
-        { title: 'User Management', href: usersIndex() },
-        { title: 'Create User', href: UserController.create.url() },
+        { title: 'users.title', href: usersIndex() },
+        { title: 'users.create.title', href: UserController.create.url() },
     ],
 };

@@ -6,6 +6,7 @@ import { DataTable } from '@/components/data-table/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useCan } from '@/hooks/use-permission';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as rolesIndex } from '@/routes/roles';
 import { index as usersIndex } from '@/routes/users';
 import type { DataTableColumn, PaginatedData, RowAction } from '@/types/datatable';
@@ -25,11 +26,12 @@ type Props = {
 export default function RolesIndex({ roles }: Props) {
     const canEdit = useCan('role.edit');
     const canDelete = useCan('role.delete');
+    const { t } = useTranslation();
 
     const columns: DataTableColumn<RoleRow>[] = [
         {
             key: 'name',
-            label: 'Role',
+            label: t('common.role'),
             sortable: true,
             render: (role) => (
                 <div className="flex items-center gap-2">
@@ -41,17 +43,17 @@ export default function RolesIndex({ roles }: Props) {
         },
         {
             key: 'users_count',
-            label: 'Users',
+            label: t('roles.columns.users'),
             sortable: true,
         },
         {
             key: 'permissions_count',
-            label: 'Permissions',
+            label: t('roles.columns.permissions'),
             sortable: true,
         },
         {
             key: 'created_at',
-            label: 'Created',
+            label: t('common.created'),
             sortable: true,
             render: (role) => (
                 <span className="text-muted-foreground">
@@ -64,18 +66,18 @@ export default function RolesIndex({ roles }: Props) {
     const rowActions: RowAction<RoleRow>[] = [
         {
             key: 'edit',
-            label: 'Edit',
+            label: t('common.edit'),
             icon: <Pencil className="mr-2 h-4 w-4" />,
             onClick: (role) => router.visit(RoleController.edit.url({ role: role.id })),
             visible: (role) => canEdit && role.name !== 'super-admin',
         },
         {
             key: 'delete',
-            label: 'Delete',
+            label: t('common.delete'),
             icon: <Trash2 className="mr-2 h-4 w-4" />,
             variant: 'destructive',
             onClick: (role) => {
-                if (confirm(`Delete role ${role.name}?`)) {
+                if (confirm(t('roles.actions.delete_confirm', { name: role.name }))) {
                     router.delete(RoleController.destroy.url({ role: role.id }));
                 }
             },
@@ -85,7 +87,7 @@ export default function RolesIndex({ roles }: Props) {
 
     return (
         <>
-            <Head title="Roles" />
+            <Head title={t('roles.title')} />
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-center justify-between">
@@ -94,9 +96,9 @@ export default function RolesIndex({ roles }: Props) {
                             <Shield className="h-5 w-5 text-primary" />
                         </div>
                         <div>
-                            <h1 className="text-lg font-semibold">Role Management</h1>
+                            <h1 className="text-lg font-semibold">{t('roles.title')}</h1>
                             <p className="text-sm text-muted-foreground">
-                                Create and manage roles and permissions.
+                                {t('roles.description')}
                             </p>
                         </div>
                     </div>
@@ -104,7 +106,7 @@ export default function RolesIndex({ roles }: Props) {
                     <Can permission="role.create">
                         <Button onClick={() => router.visit(RoleController.create.url())}>
                             <Plus className="mr-1 h-4 w-4" />
-                            Add Role
+                            {t('roles.actions.new')}
                         </Button>
                     </Can>
                 </div>
@@ -123,7 +125,7 @@ export default function RolesIndex({ roles }: Props) {
 
 RolesIndex.layout = {
     breadcrumbs: [
-        { title: 'User Management', href: usersIndex() },
-        { title: 'Roles', href: rolesIndex() },
+        { title: 'users.title', href: usersIndex() },
+        { title: 'roles.title', href: rolesIndex() },
     ],
 };
