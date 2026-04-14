@@ -107,6 +107,14 @@ class HealthController extends Controller
      */
     private function checkRedisCache(): array
     {
+        if (config('cache.stores.redis') === null) {
+            return [
+                'ok' => null,
+                'store' => 'redis',
+                'latency_ms' => null,
+            ];
+        }
+
         $store = 'redis';
         $start = hrtime(true);
 
@@ -114,9 +122,9 @@ class HealthController extends Controller
             $cache = Cache::store($store);
         } catch (\Throwable $e) {
             return [
-                'ok' => null,
+                'ok' => false,
                 'store' => $store,
-                'latency_ms' => null,
+                'latency_ms' => (int) ((hrtime(true) - $start) / 1_000_000),
                 'error' => $e->getMessage(),
             ];
         }
@@ -258,4 +266,3 @@ class HealthController extends Controller
         }
     }
 }
-
