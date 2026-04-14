@@ -1,8 +1,8 @@
 # Starter Kit — Laravel 13 + Inertia.js (React)
 
-Opinionated starter kit for building modern admin dashboards and SaaS-style apps with **Laravel 13**, **Inertia v3**, **React 19**, and **Tailwind CSS v4**.
+Starter kit yang opinionated untuk membangun dashboard admin modern dan aplikasi bergaya SaaS dengan **Laravel 13**, **Inertia v3**, **React 19**, dan **Tailwind CSS v4**.
 
-This repository includes a growing set of production-grade modules: settings stored in DB (with Redis cache), role/permission management, media library, notifications, audit logs, API v1 (Sanctum), i18n, and more.
+Repository ini berisi kumpulan modul yang terus bertambah dan siap dipakai di production: settings tersimpan di DB (dengan cache Redis), manajemen role/permission, media library, notifikasi, audit log, API v1 (Sanctum), i18n, dan lainnya.
 
 ---
 
@@ -15,28 +15,29 @@ This repository includes a growing set of production-grade modules: settings sto
 - **RBAC**: Spatie Laravel Permission
 - **Audit log**: Spatie Activitylog
 - **Media**: Spatie Media Library
-- **API**: `/api/v1/*` with Sanctum (personal access tokens)
-- **Docs**: Scramble (OpenAPI UI)
+- **API**: `/api/v1/*` dengan Sanctum (personal access tokens)
+- **Dokumentasi**: Scramble (OpenAPI UI)
 - **Monitoring (optional)**: Sentry
-- **Performance tooling**: Telescope (dev) + Horizon (queue monitor)
+- **Performa (tooling)**: Telescope (dev) + Horizon (monitor queue)
 
 ---
 
-## Requirements
+## Kebutuhan
 
 - PHP **8.3**
 - Composer
 - Node.js + npm
 - A database (SQLite / MySQL)
-- Redis (recommended)
-  - Required for: **Horizon**, tagged caches, and some settings caches
-  - App attempts to **fail-open** in places where Redis is optional
+- Database (SQLite / MySQL)
+- Redis (direkomendasikan)
+  - Dibutuhkan untuk: **Horizon**, cache bertag, dan sebagian cache settings
+  - Aplikasi berusaha **fail-open** saat Redis bersifat opsional
 
 ---
 
-## Quick Start
+## Mulai Cepat
 
-From the repo root:
+Dari root repo:
 
 ```bash
 composer install
@@ -47,13 +48,13 @@ npm install
 npm run dev
 ```
 
-Or use the bundled setup script:
+Atau gunakan script setup yang sudah tersedia:
 
 ```bash
 composer run setup
 ```
 
-Run the full dev stack (server + queue + logs + Vite) using:
+Jalankan full dev stack (server + queue + logs + Vite) dengan:
 
 ```bash
 composer run dev
@@ -61,9 +62,9 @@ composer run dev
 
 ---
 
-## Default Seeded Accounts
+## Akun Default (Seeder)
 
-`php artisan migrate --seed` seeds roles, permissions, and sample users.
+`php artisan migrate --seed` akan membuat roles, permissions, dan sample users.
 
 - **Super Admin**
   - Email: `superadmin@example.com`
@@ -72,52 +73,52 @@ composer run dev
   - Email: `admin@example.com`
   - Password: `password`
 
-> The `super-admin` role is all-powerful via a `Gate::before` rule.
+> Role `super-admin` punya akses penuh via rule `Gate::before`.
 
 ---
 
-## App Modules (Highlights)
+## Modul Aplikasi (Ringkasan)
 
-### Settings (DB-backed + Redis cache)
+### Settings (DB-backed + cache Redis)
 
-- Admin settings under `/settings/*`:
+- Settings admin ada di `/settings/*`:
   - **App Settings**: name, logo, timezone, locale, maintenance mode
   - **Mail Settings**: providers & secrets (stored encrypted in DB), send test email
   - **Feature Flags**: enable/disable by environment and allowlist users/roles
-- Access rules are permission-based:
+- Akses berbasis permission:
   - `settings.app.manage`, `settings.mail.manage`, `settings.flags.manage`
 
 ### User Management
 
 - CRUD **Users** and **Roles** (Spatie Permission)
-- Role `super-admin` is **read-only**
+- Role `super-admin` bersifat **read-only**
 - Permissions are created via seeder `database/seeders/RolePermissionSeeder.php`
 
 ### Media Library
 
-- Admin-only media module under `/media`
+- Modul media khusus admin di `/media`
 - Upload files/images and manage assets
 - Thumbnail/WebP conversions via Spatie Media Library
 - Chunked uploads supported (large files)
 
 ### Notifications
 
-- In-app notifications:
+- Notifikasi in-app:
   - Bell polling endpoint: `/notifications/poll`
   - Full list: `/notifications`
   - Mark read / mark all read
-- Notification preferences stored per user
+- Preferensi notifikasi tersimpan per user
 
 ### Audit Trail (Activity Log)
 
 - Admin page: `/settings/activity`
 - Logs changes on key models with before/after diffs (secrets masked)
 
-### i18n (Internationalization)
+### i18n (Internasionalisasi)
 
-- Backend translations via Laravel `lang/*`
+- Terjemahan backend via Laravel `lang/*`
 - Frontend translations shared via Inertia and consumed via `useTranslation()`
-- Locale switcher persisted (session for guests, `users.locale` for authenticated)
+- Locale switcher tersimpan (session untuk guest, `users.locale` untuk user login)
 
 ### API Layer (v1)
 
@@ -128,35 +129,35 @@ composer run dev
   - `DELETE /api/v1/auth/tokens/current` → revoke current token
   - `GET /api/v1/me` → current user resource (requires Bearer token)
 
-API docs:
-- `GET /api/docs` → redirects to Scramble UI (default Scramble path is `/docs/api`)
-- `GET /api/docs.json` → OpenAPI JSON
+- Dokumentasi API:
+  - `GET /api/docs` → redirects to Scramble UI (default Scramble path is `/docs/api`)
+  - `GET /api/docs.json` → OpenAPI JSON
 
-Health check:
-- `GET /api/health` → checks database/cache/queue/storage and returns 200 or 503
+- Health check:
+  - `GET /api/health` → checks database/cache/queue/storage and returns 200 or 503
 
 ---
 
 ## Dev Tools
 
-### Telescope (dev-only)
+### Telescope (khusus development)
 
 - Path: `/telescope`
 - Access:
-  - Enabled by default only when `APP_ENV=local` (or explicitly `TELESCOPE_ENABLED=true`)
-  - Gate `viewTelescope` allows access for role `admin` (and `super-admin` via bypass)
+  - Default aktif hanya saat `APP_ENV=local` (atau set `TELESCOPE_ENABLED=true`)
+  - Gate `viewTelescope` mengizinkan role `admin` (dan `super-admin` via bypass)
 
-### Horizon (queue monitor)
+### Horizon (monitor queue)
 
 - Path: `/horizon`
 - Requires Redis queue (`QUEUE_CONNECTION=redis`)
-- Gate `viewHorizon` allows access for role `admin` (and `super-admin` via bypass)
+- Gate `viewHorizon` mengizinkan role `admin` (dan `super-admin` via bypass)
 
 ---
 
-## Environment Variables (common)
+## Environment Variables (umum)
 
-See `.env.example` for the full list. Common ones:
+Lihat `.env.example` untuk daftar lengkap. Beberapa yang sering dipakai:
 
 - `APP_ENV`, `APP_DEBUG`, `APP_URL`
 - `DB_CONNECTION` (SQLite by default in this repo)
@@ -192,13 +193,13 @@ npm run format:check
 
 ## Testing
 
-Run all tests:
+Jalankan semua test:
 
 ```bash
 php artisan test
 ```
 
-Run a subset:
+Jalankan subset:
 
 ```bash
 php artisan test --compact tests/Feature/Api/V1/ApiAuthTest.php
@@ -206,18 +207,18 @@ php artisan test --compact tests/Feature/Api/V1/ApiAuthTest.php
 
 ---
 
-## Notes for Production
+## Catatan Production
 
 - Ensure `APP_ENV=production` and `APP_DEBUG=false`.
-- Keep **Telescope disabled** in production (`TELESCOPE_ENABLED=false`).
+- Pastikan **Telescope disabled** di production (`TELESCOPE_ENABLED=false`).
 - Configure Redis and Horizon for stable queues.
 - Configure Sentry by setting `SENTRY_DSN` (optional).
 
 ---
 
-## Contributing
+## Kontribusi
 
-PRs are welcome. Please:
+PR sangat diterima. Mohon:
 
 - Keep changes focused and consistent with existing conventions.
 - Add/adjust Pest tests for behavior changes.
@@ -225,7 +226,6 @@ PRs are welcome. Please:
 
 ---
 
-## License
+## Lisensi
 
 MIT (see `composer.json` for current license metadata).
-
