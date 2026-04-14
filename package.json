@@ -10,7 +10,14 @@
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
         "lint:check": "eslint .",
+        "prepare": "husky",
         "types:check": "tsc --noEmit"
+    },
+    "lint-staged": {
+        "resources/**/*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ]
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
@@ -24,6 +31,8 @@
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-react": "^7.37.3",
         "eslint-plugin-react-hooks": "^7.0.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.1",
         "prettier": "^3.4.2",
         "prettier-plugin-tailwindcss": "^0.6.11",
         "typescript-eslint": "^8.23.0"
