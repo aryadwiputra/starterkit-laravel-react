@@ -4,6 +4,7 @@ import RoleController from './RoleController'
 import ImpersonationController from './ImpersonationController'
 import ColumnPreferenceController from './ColumnPreferenceController'
 import Settings from './Settings'
+import NotificationsController from './NotificationsController'
 
 const Controllers = {
     LocaleController: Object.assign(LocaleController, LocaleController),
@@ -12,6 +13,7 @@ const Controllers = {
     ImpersonationController: Object.assign(ImpersonationController, ImpersonationController),
     ColumnPreferenceController: Object.assign(ColumnPreferenceController, ColumnPreferenceController),
     Settings: Object.assign(Settings, Settings),
+    NotificationsController: Object.assign(NotificationsController, NotificationsController),
 }
 
 export default Controllers

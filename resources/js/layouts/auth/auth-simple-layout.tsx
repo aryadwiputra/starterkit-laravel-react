@@ -10,6 +10,8 @@ export default function AuthSimpleLayout({
     description,
 }: AuthLayoutProps) {
     const { t } = useTranslation();
+    const titleText = title ? t(title) : '';
+    const descriptionText = description ? t(description) : '';
 
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
@@ -23,13 +25,15 @@ export default function AuthSimpleLayout({
                             <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
                                 <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" />
                             </div>
-                            <span className="sr-only">{t(title)}</span>
+                            <span className="sr-only">{titleText}</span>
                         </Link>
 
                         <div className="space-y-2 text-center">
-                            <h1 className="text-xl font-medium">{t(title)}</h1>
+                            <h1 className="text-xl font-medium">
+                                {titleText}
+                            </h1>
                             <p className="text-center text-sm text-muted-foreground">
-                                {t(description)}
+                                {descriptionText}
                             </p>
                         </div>
                     </div>

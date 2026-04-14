@@ -116,7 +116,7 @@ export default function RolesIndex({ roles }: Props) {
                     data={roles}
                     columns={columns}
                     rowActions={rowActions}
-                    routePrefix={rolesIndex()}
+                    routePrefix={rolesIndex().url}
                 />
             </div>
         </>

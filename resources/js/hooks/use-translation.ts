@@ -1,20 +1,27 @@
 import { usePage } from '@inertiajs/react';
 
-type TranslationValue = string | Record<string, TranslationValue>;
-type Translations = Record<string, TranslationValue>;
+interface TranslationNode {
+    [key: string]: string | TranslationNode;
+}
+
+type Translations = TranslationNode;
 
 type ReplaceMap = Record<string, string | number>;
 
 function resolveKey(translations: Translations, key: string): string | null {
     const segments = key.split('.');
-    let current: TranslationValue | undefined = translations;
+    let current: string | TranslationNode | undefined = translations;
 
     for (const segment of segments) {
-        if (typeof current !== 'object' || current === null || !(segment in current)) {
+        if (
+            typeof current !== 'object' ||
+            current === null ||
+            !(segment in current)
+        ) {
             return null;
         }
 
-        current = (current as Record<string, TranslationValue>)[segment];
+        current = (current as TranslationNode)[segment];
     }
 
     return typeof current === 'string' ? current : null;
