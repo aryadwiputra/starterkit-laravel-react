@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { LogOut, Monitor, Moon, Sun, User as UserIcon } from 'lucide-react';
 import {
     DropdownMenuGroup,
@@ -11,7 +11,9 @@ import {
 import { UserInfo } from '@/components/user-info';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { useTranslation } from '@/hooks/use-translation';
 import { logout } from '@/routes';
+import { update as updateLocale } from '@/routes/locale';
 import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
@@ -22,6 +24,12 @@ type Props = {
 export function UserMenuContent({ user }: Props) {
     const cleanup = useMobileNavigation();
     const { appearance, updateAppearance } = useAppearance();
+    const { t } = useTranslation();
+    const { locale, availableLocales, localeLabels } = usePage().props as {
+        locale: string;
+        availableLocales: string[];
+        localeLabels: Record<string, string>;
+    };
 
     const handleLogout = () => {
         cleanup();
@@ -45,12 +53,12 @@ export function UserMenuContent({ user }: Props) {
                         onClick={cleanup}
                     >
                         <UserIcon className="mr-2" />
-                        Profile
+                        {t('common.profile')}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuLabel>Theme</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('common.theme')}</DropdownMenuLabel>
             <DropdownMenuRadioGroup
                 value={appearance}
                 onValueChange={(value) =>
@@ -59,16 +67,30 @@ export function UserMenuContent({ user }: Props) {
             >
                 <DropdownMenuRadioItem value="light">
                     <Sun className="h-4 w-4" />
-                    Light
+                    {t('common.light')}
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="dark">
                     <Moon className="h-4 w-4" />
-                    Dark
+                    {t('common.dark')}
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="system">
                     <Monitor className="h-4 w-4" />
-                    System
+                    {t('common.system')}
                 </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>{t('common.language')}</DropdownMenuLabel>
+            <DropdownMenuRadioGroup
+                value={locale}
+                onValueChange={(value) =>
+                    router.post(updateLocale().url, { locale: value }, { preserveScroll: true })
+                }
+            >
+                {availableLocales.map((option) => (
+                    <DropdownMenuRadioItem key={option} value={option}>
+                        {localeLabels[option] ?? option}
+                    </DropdownMenuRadioItem>
+                ))}
             </DropdownMenuRadioGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -80,7 +102,7 @@ export function UserMenuContent({ user }: Props) {
                     data-test="logout-button"
                 >
                     <LogOut className="mr-2" />
-                    Log out
+                    {t('common.logout')}
                 </Link>
             </DropdownMenuItem>
         </>

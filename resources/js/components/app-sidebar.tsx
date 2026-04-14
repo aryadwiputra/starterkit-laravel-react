@@ -19,6 +19,7 @@ import {
     SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { useCurrentUrl } from '@/hooks/use-current-url';
+import { useTranslation } from '@/hooks/use-translation';
 import { dashboard } from '@/routes';
 import { edit as editAppSettings } from '@/routes/app-settings';
 import { index as featureFlagsIndex } from '@/routes/feature-flags';
@@ -27,34 +28,22 @@ import { index as settingsIndex } from '@/routes/settings';
 import { index as usersIndex } from '@/routes/users';
 import type { NavItem } from '@/types';
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
-
 export function AppSidebar() {
     const { permissions } = usePage().props;
     const userPermissions = permissions as string[];
     const { isCurrentOrParentUrl } = useCurrentUrl();
+    const { t } = useTranslation();
 
     const mainNavItems: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: t('common.dashboard'),
             href: dashboard(),
             icon: LayoutGrid,
         },
         ...(userPermissions.includes('user.view')
             ? [
                   {
-                      title: 'User Management',
+                      title: t('common.user_management'),
                       href: usersIndex(),
                       icon: Users,
                   },
@@ -67,9 +56,9 @@ export function AppSidebar() {
     const canManageFlags = userPermissions.includes('settings.flags.manage');
 
     const settingsItems: NavItem[] = [
-        ...(canManageApp ? [{ title: 'App', href: editAppSettings(), icon: null }] : []),
-        ...(canManageMail ? [{ title: 'Mail', href: editMailSettings(), icon: null }] : []),
-        ...(canManageFlags ? [{ title: 'Feature flags', href: featureFlagsIndex(), icon: null }] : []),
+        ...(canManageApp ? [{ title: t('common.settings_app'), href: editAppSettings(), icon: null }] : []),
+        ...(canManageMail ? [{ title: t('common.settings_mail'), href: editMailSettings(), icon: null }] : []),
+        ...(canManageFlags ? [{ title: t('common.settings_feature_flags'), href: featureFlagsIndex(), icon: null }] : []),
     ];
 
     const settingsActive =
@@ -77,6 +66,18 @@ export function AppSidebar() {
         settingsItems.some((item) => isCurrentOrParentUrl(item.href));
 
     const showSettings = canManageApp || canManageMail || canManageFlags;
+    const footerNavItems: NavItem[] = [
+        {
+            title: t('common.repository'),
+            href: 'https://github.com/laravel/react-starter-kit',
+            icon: FolderGit2,
+        },
+        {
+            title: t('common.documentation'),
+            href: 'https://laravel.com/docs/starter-kits#react',
+            icon: BookOpen,
+        },
+    ];
 
     return (
         <Sidebar collapsible="icon" variant="inset">
@@ -106,7 +107,7 @@ export function AppSidebar() {
                                             className="group"
                                         >
                                             <Settings />
-                                            <span>Settings</span>
+                                            <span>{t('common.settings')}</span>
                                             <ChevronDown className="ml-auto transition-transform group-data-[state=open]:rotate-180" />
                                         </SidebarMenuButton>
                                     </CollapsibleTrigger>
