@@ -61,8 +61,28 @@ class FeatureFlagsController extends Controller
             'environments' => $request->validated('environments'),
         ]);
 
-        $flag->roles()->sync(Role::query()->whereIn('name', $request->validated('roles', []))->pluck('id'));
+        $rolesOld = [];
+        $usersOld = [];
+
+        $roleIds = Role::query()->whereIn('name', $request->validated('roles', []))->pluck('id');
+        $flag->roles()->sync($roleIds);
         $flag->users()->sync($request->validated('users', []));
+
+        $rolesNew = $flag->roles()->pluck('name')->values()->all();
+        $usersNew = $flag->users()->pluck('users.id')->values()->all();
+
+        activity()
+            ->useLog('feature-flags')
+            ->event('updated')
+            ->performedOn($flag)
+            ->causedBy($request->user())
+            ->withProperties([
+                'roles_old' => $rolesOld,
+                'roles_new' => $rolesNew,
+                'users_old' => $usersOld,
+                'users_new' => $usersNew,
+            ])
+            ->log('Updated feature flag targeting');
 
         $featureFlags->forgetCache();
 
@@ -76,6 +96,9 @@ class FeatureFlagsController extends Controller
      */
     public function update(UpdateFeatureFlagRequest $request, FeatureFlag $featureFlag, FeatureFlagService $featureFlags): RedirectResponse
     {
+        $rolesOld = $featureFlag->roles()->pluck('name')->values()->all();
+        $usersOld = $featureFlag->users()->pluck('users.id')->values()->all();
+
         $featureFlag->update([
             'key' => $request->validated('key'),
             'description' => $request->validated('description'),
@@ -83,8 +106,25 @@ class FeatureFlagsController extends Controller
             'environments' => $request->validated('environments'),
         ]);
 
-        $featureFlag->roles()->sync(Role::query()->whereIn('name', $request->validated('roles', []))->pluck('id'));
+        $roleIds = Role::query()->whereIn('name', $request->validated('roles', []))->pluck('id');
+        $featureFlag->roles()->sync($roleIds);
         $featureFlag->users()->sync($request->validated('users', []));
+
+        $rolesNew = $featureFlag->roles()->pluck('name')->values()->all();
+        $usersNew = $featureFlag->users()->pluck('users.id')->values()->all();
+
+        activity()
+            ->useLog('feature-flags')
+            ->event('updated')
+            ->performedOn($featureFlag)
+            ->causedBy($request->user())
+            ->withProperties([
+                'roles_old' => $rolesOld,
+                'roles_new' => $rolesNew,
+                'users_old' => $usersOld,
+                'users_new' => $usersNew,
+            ])
+            ->log('Updated feature flag targeting');
 
         $featureFlags->forgetCache();
 
@@ -99,6 +139,22 @@ class FeatureFlagsController extends Controller
     public function destroy(Request $request, FeatureFlag $featureFlag, FeatureFlagService $featureFlags): RedirectResponse
     {
         abort_unless($request->user()?->can('settings.flags.manage'), 403);
+
+        $rolesOld = $featureFlag->roles()->pluck('name')->values()->all();
+        $usersOld = $featureFlag->users()->pluck('users.id')->values()->all();
+
+        activity()
+            ->useLog('feature-flags')
+            ->event('deleted')
+            ->performedOn($featureFlag)
+            ->causedBy($request->user())
+            ->withProperties([
+                'roles_old' => $rolesOld,
+                'roles_new' => [],
+                'users_old' => $usersOld,
+                'users_new' => [],
+            ])
+            ->log('Deleted feature flag targeting');
 
         $featureFlag->delete();
         $featureFlags->forgetCache();
