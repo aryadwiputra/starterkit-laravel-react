@@ -40,7 +40,11 @@ class UserController extends Controller implements HasMiddleware
     {
         $this->authorize('viewAny', User::class);
 
-        $query = User::with('roles');
+        $query = User::query()->with('roles');
+
+        if ($roleFilter = $request->filters()['role'] ?? null) {
+            $query->role($roleFilter);
+        }
 
         $users = $dataTable->apply(
             query: $query,
@@ -48,17 +52,6 @@ class UserController extends Controller implements HasMiddleware
             searchableColumns: ['name', 'email'],
             filterableColumns: ['is_active'],
         );
-
-        // Handle role filter separately since it's a relationship
-        if ($roleFilter = $request->filters()['role'] ?? null) {
-            $query->role($roleFilter);
-            $users = $dataTable->apply(
-                query: $query,
-                request: $request,
-                searchableColumns: ['name', 'email'],
-                filterableColumns: ['is_active'],
-            );
-        }
 
         return Inertia::render('users/index', [
             'users' => $users,
