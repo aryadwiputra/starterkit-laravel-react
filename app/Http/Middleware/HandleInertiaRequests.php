@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\FeatureFlagService;
+use App\Services\TranslationsResolver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
@@ -39,6 +40,7 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         $featureFlags = app(FeatureFlagService::class);
+        $translations = app(TranslationsResolver::class)->resolve($request);
 
         $logoPath = settings('app.logo_path');
         $logoUrl = is_string($logoPath) && $logoPath !== '' ? Storage::disk('public')->url($logoPath) : null;
@@ -58,6 +60,11 @@ class HandleInertiaRequests extends Middleware
                 'original_user_name' => $request->session()->get('impersonate.original_name'),
             ] : null,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'locale' => app()->getLocale(),
+            'fallbackLocale' => config('app.fallback_locale'),
+            'availableLocales' => config('app.available_locales', []),
+            'localeLabels' => config('app.locale_labels', []),
+            'translations' => $translations,
         ];
     }
 }

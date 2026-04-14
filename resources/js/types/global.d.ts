@@ -11,6 +11,11 @@ declare module '@inertiajs/core' {
             features: string[];
             impersonating: Impersonation | null;
             sidebarOpen: boolean;
+            locale: string;
+            fallbackLocale: string;
+            availableLocales: string[];
+            localeLabels: Record<string, string>;
+            translations: Record<string, unknown>;
             [key: string]: unknown;
         };
     }
