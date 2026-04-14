@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Listeners\ApplyNotificationPreferences;
 use App\Policies\RolePolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Events\NotificationSending;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -29,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureAuthorization();
+        $this->configureNotifications();
     }
 
     /**
@@ -65,5 +69,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('super-admin') ? true : null;
         });
+    }
+
+    protected function configureNotifications(): void
+    {
+        Event::listen(NotificationSending::class, ApplyNotificationPreferences::class);
     }
 }
