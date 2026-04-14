@@ -16,8 +16,8 @@ class ImpersonationController extends Controller
     public function start(Request $request, User $user): RedirectResponse
     {
         // Cannot impersonate super-admin (explicit check since Gate::before bypasses policy for super-admins)
-        abort_if($user->hasRole('super-admin'), 403, 'Cannot impersonate a super-admin.');
-        abort_if($request->user()->id === $user->id, 403, 'Cannot impersonate yourself.');
+        abort_if($user->hasRole('super-admin'), 403, __('users.impersonation.super_admin'));
+        abort_if($request->user()->id === $user->id, 403, __('users.impersonation.self'));
 
         $this->authorize('impersonate', $user);
 
@@ -39,7 +39,7 @@ class ImpersonationController extends Controller
 
         Auth::login($user);
 
-        Inertia::flash('toast', ['type' => 'info', 'message' => __('Now impersonating :name.', ['name' => $user->name])]);
+        Inertia::flash('toast', ['type' => 'info', 'message' => __('users.impersonation.started', ['name' => $user->name])]);
 
         return to_route('dashboard');
     }
@@ -74,7 +74,7 @@ class ImpersonationController extends Controller
 
         Auth::login($originalUser);
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Returned to your account.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('users.impersonation.stopped')]);
 
         return to_route('dashboard');
     }

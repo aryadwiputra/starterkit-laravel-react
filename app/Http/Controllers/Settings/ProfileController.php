@@ -67,7 +67,7 @@ class ProfileController extends Controller
             ->causedBy($user)
             ->log('Updated own profile');
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('profile.toast.updated')]);
 
         return to_route('profile.edit');
     }

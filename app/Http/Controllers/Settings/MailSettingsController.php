@@ -107,7 +107,7 @@ class MailSettingsController extends Controller
 
         app('mail.manager')->forgetMailers();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Mail settings updated.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.mail_updated')]);
 
         return back();
     }
@@ -120,12 +120,12 @@ class MailSettingsController extends Controller
         try {
             Mail::to($request->validated('to'))->send(new SettingsTestMail);
         } catch (\Throwable $e) {
-            Inertia::flash('toast', ['type' => 'error', 'message' => __('Failed to send test email: :message', ['message' => $e->getMessage()])]);
+            Inertia::flash('toast', ['type' => 'error', 'message' => __('settings.toast.mail_test_failed', ['message' => $e->getMessage()])]);
 
             return back();
         }
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Test email sent.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.mail_test_sent')]);
 
         return back();
     }

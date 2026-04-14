@@ -73,7 +73,7 @@ class RoleController extends Controller implements HasMiddleware
 
         $role->syncPermissions($request->validated('permissions', []));
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role created successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.created')]);
 
         return to_route('roles.index');
     }
@@ -112,7 +112,7 @@ class RoleController extends Controller implements HasMiddleware
 
         $role->syncPermissions($request->validated('permissions', []));
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role updated successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.updated')]);
 
         return to_route('roles.index');
     }
@@ -130,7 +130,7 @@ class RoleController extends Controller implements HasMiddleware
 
         $role->delete();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Role deleted successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.deleted')]);
 
         return to_route('roles.index');
     }

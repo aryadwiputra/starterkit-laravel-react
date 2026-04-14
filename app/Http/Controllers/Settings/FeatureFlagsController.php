@@ -66,7 +66,7 @@ class FeatureFlagsController extends Controller
 
         $featureFlags->forgetCache();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Feature flag created.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.feature_created')]);
 
         return back();
     }
@@ -88,7 +88,7 @@ class FeatureFlagsController extends Controller
 
         $featureFlags->forgetCache();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Feature flag updated.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.feature_updated')]);
 
         return back();
     }
@@ -103,7 +103,7 @@ class FeatureFlagsController extends Controller
         $featureFlag->delete();
         $featureFlags->forgetCache();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Feature flag deleted.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.feature_deleted')]);
 
         return back();
     }

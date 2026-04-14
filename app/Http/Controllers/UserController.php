@@ -99,7 +99,7 @@ class UserController extends Controller implements HasMiddleware
             ->withProperties(['role' => $request->validated('role')])
             ->log('Created user');
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('User created successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('users.toast.created')]);
 
         return to_route('users.index');
     }
@@ -177,7 +177,7 @@ class UserController extends Controller implements HasMiddleware
             ->withProperties(['role' => $request->validated('role')])
             ->log('Updated user');
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('User updated successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('users.toast.updated')]);
 
         return to_route('users.index');
     }
@@ -196,7 +196,7 @@ class UserController extends Controller implements HasMiddleware
 
         $user->delete();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('User deleted successfully.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('users.toast.deleted')]);
 
         return to_route('users.index');
     }
@@ -232,9 +232,9 @@ class UserController extends Controller implements HasMiddleware
         };
 
         $message = match ($action) {
-            'activate' => __(':count users activated.', ['count' => $users->count()]),
-            'deactivate' => __(':count users deactivated.', ['count' => $users->count()]),
-            'delete' => __('Selected users deleted.'),
+            'activate' => __('users.toast.activated', ['count' => $users->count()]),
+            'deactivate' => __('users.toast.deactivated', ['count' => $users->count()]),
+            'delete' => __('users.toast.bulk_deleted'),
         };
 
         Inertia::flash('toast', ['type' => 'success', 'message' => $message]);
