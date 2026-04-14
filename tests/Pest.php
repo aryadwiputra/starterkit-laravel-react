@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 /*
@@ -17,6 +18,14 @@ use Tests\TestCase;
 pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
+
+beforeEach(function () {
+    try {
+        Cache::store('redis')->forget('settings:all');
+    } catch (Throwable) {
+        // Ignore cache failures during tests.
+    }
+});
 
 /*
 |--------------------------------------------------------------------------
