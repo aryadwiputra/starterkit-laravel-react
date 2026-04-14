@@ -22,6 +22,7 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useTranslation } from '@/hooks/use-translation';
 import { dashboard } from '@/routes';
 import { edit as editAppSettings } from '@/routes/app-settings';
+import { index as activityIndex } from '@/routes/activity';
 import { index as featureFlagsIndex } from '@/routes/feature-flags';
 import { edit as editMailSettings } from '@/routes/mail-settings';
 import { index as settingsIndex } from '@/routes/settings';
@@ -64,18 +65,20 @@ export function AppSidebar() {
     const canManageApp = userPermissions.includes('settings.app.manage');
     const canManageMail = userPermissions.includes('settings.mail.manage');
     const canManageFlags = userPermissions.includes('settings.flags.manage');
+    const canViewActivity = userPermissions.includes('activity.view');
 
     const settingsItems: NavItem[] = [
         ...(canManageApp ? [{ title: t('common.settings_app'), href: editAppSettings(), icon: null }] : []),
         ...(canManageMail ? [{ title: t('common.settings_mail'), href: editMailSettings(), icon: null }] : []),
         ...(canManageFlags ? [{ title: t('common.settings_feature_flags'), href: featureFlagsIndex(), icon: null }] : []),
+        ...(canViewActivity ? [{ title: t('common.audit_log'), href: activityIndex(), icon: null }] : []),
     ];
 
     const settingsActive =
         isCurrentOrParentUrl(settingsIndex()) ||
         settingsItems.some((item) => isCurrentOrParentUrl(item.href));
 
-    const showSettings = canManageApp || canManageMail || canManageFlags;
+    const showSettings = canManageApp || canManageMail || canManageFlags || canViewActivity;
     const footerNavItems: NavItem[] = [
         {
             title: t('common.repository'),
@@ -113,7 +116,7 @@ export function AppSidebar() {
                                     <CollapsibleTrigger asChild>
                                         <SidebarMenuButton
                                             isActive={settingsActive}
-                                            tooltip={{ children: 'Settings' }}
+                                            tooltip={{ children: t('common.settings') }}
                                             className="group"
                                         >
                                             <Settings />
