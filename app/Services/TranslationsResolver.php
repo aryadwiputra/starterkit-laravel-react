@@ -85,6 +85,11 @@ class TranslationsResolver
             $modules[] = 'notifications';
         }
 
+        if (str_starts_with($routeName, 'activity.')) {
+            $modules[] = 'activity';
+            $modules[] = 'datatable';
+        }
+
         if (str_starts_with($routeName, 'media.')
             || str_starts_with($routeName, 'media-uploads.')) {
             $modules[] = 'media';

@@ -8,6 +8,7 @@ return [
     'settings_mail' => 'Email',
     'settings_feature_flags' => 'Feature Flags',
     'media' => 'Media',
+    'audit_log' => 'Audit log',
     'profile' => 'Profil',
     'security' => 'Keamanan',
     'theme' => 'Tema',
