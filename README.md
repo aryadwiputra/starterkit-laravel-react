@@ -10,7 +10,7 @@ Repository ini berisi kumpulan modul yang terus bertambah dan siap dipakai di pr
 
 - **Backend**: Laravel 13 (PHP 8.3)
 - **Frontend**: Inertia.js v3 + React 19 + Vite
-- **UI**: Tailwind CSS v4 + Radix UI primitives
+- **UI**: Tailwind CSS v4 + shadcn/ui (Radix UI primitives)
 - **Auth**: Laravel Fortify (+ optional 2FA)
 - **RBAC**: Spatie Laravel Permission
 - **Audit log**: Spatie Activitylog
@@ -27,11 +27,16 @@ Repository ini berisi kumpulan modul yang terus bertambah dan siap dipakai di pr
 - PHP **8.3**
 - Composer
 - Node.js + npm
-- A database (SQLite / MySQL)
 - Database (SQLite / MySQL)
 - Redis (direkomendasikan)
   - Dibutuhkan untuk: **Horizon**, cache bertag, dan sebagian cache settings
   - Aplikasi berusaha **fail-open** saat Redis bersifat opsional
+
+---
+
+## Landing Page
+
+Halaman `/` menampilkan ringkasan fitur starter kit + quickstart + link penting. Tersedia **language switcher** (untuk guest) yang menyimpan locale ke session.
 
 ---
 
@@ -58,6 +63,19 @@ Jalankan full dev stack (server + queue + logs + Vite) dengan:
 
 ```bash
 composer run dev
+```
+
+### Menggunakan MySQL
+
+Secara default contoh konfigurasi menggunakan SQLite. Untuk MySQL, update `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=starterkit
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 ---
