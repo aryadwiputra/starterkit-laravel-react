@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 export const users = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ users.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 users.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ users.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -116,7 +116,7 @@ users.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -126,7 +126,7 @@ users.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 const usersForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -136,7 +136,7 @@ const usersForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 usersForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +146,7 @@ usersForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::users
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:114
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:170
 * @route '/settings/features/users'
 */
 usersForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -219,7 +219,7 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::update
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:97
 * @route '/settings/features/{featureFlag}'
 */
 export const update = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -234,7 +234,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::update
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:97
 * @route '/settings/features/{featureFlag}'
 */
 update.url = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -267,7 +267,7 @@ update.url = (args: { featureFlag: string | number | { id: string | number } } |
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::update
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:97
 * @route '/settings/features/{featureFlag}'
 */
 update.put = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -277,7 +277,7 @@ update.put = (args: { featureFlag: string | number | { id: string | number } } |
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::update
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:97
 * @route '/settings/features/{featureFlag}'
 */
 const updateForm = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -292,7 +292,7 @@ const updateForm = (args: { featureFlag: string | number | { id: string | number
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::update
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:97
 * @route '/settings/features/{featureFlag}'
 */
 updateForm.put = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -309,7 +309,7 @@ update.form = updateForm
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::destroy
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:139
 * @route '/settings/features/{featureFlag}'
 */
 export const destroy = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -324,7 +324,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::destroy
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:139
 * @route '/settings/features/{featureFlag}'
 */
 destroy.url = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
@@ -357,7 +357,7 @@ destroy.url = (args: { featureFlag: string | number | { id: string | number } } 
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::destroy
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:139
 * @route '/settings/features/{featureFlag}'
 */
 destroy.delete = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -367,7 +367,7 @@ destroy.delete = (args: { featureFlag: string | number | { id: string | number }
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::destroy
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:139
 * @route '/settings/features/{featureFlag}'
 */
 const destroyForm = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -382,7 +382,7 @@ const destroyForm = (args: { featureFlag: string | number | { id: string | numbe
 
 /**
 * @see \App\Http\Controllers\Settings\FeatureFlagsController::destroy
-* @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
+* @see app/Http/Controllers/Settings/FeatureFlagsController.php:139
 * @route '/settings/features/{featureFlag}'
 */
 destroyForm.delete = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
