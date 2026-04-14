@@ -1,6 +1,6 @@
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { Camera, ShieldCheck } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import DeleteUser from '@/components/delete-user';
@@ -12,11 +12,13 @@ import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { useTranslation } from '@/hooks/use-translation';
 import { edit } from '@/routes/profile';
+import { update as updateNotificationPreferences } from '@/routes/profile/notification-preferences';
 import { disable, enable } from '@/routes/two-factor';
 import { send } from '@/routes/verification';
 
@@ -26,6 +28,24 @@ type Props = {
     canManageTwoFactor?: boolean;
     requiresConfirmation?: boolean;
     twoFactorEnabled?: boolean;
+    notificationTypes: Array<{
+        key: string;
+        title_key: string;
+        description_key: string;
+        default_channels: {
+            database: boolean;
+            mail: boolean;
+            slack: boolean;
+        };
+    }>;
+    notificationPreferences: Array<{
+        type_key: string;
+        channels: {
+            database?: boolean;
+            mail?: boolean;
+            slack?: boolean;
+        };
+    }>;
 };
 
 export default function Profile({
@@ -34,6 +54,8 @@ export default function Profile({
     canManageTwoFactor = false,
     requiresConfirmation = false,
     twoFactorEnabled = false,
+    notificationTypes,
+    notificationPreferences,
 }: Props) {
     const { auth } = usePage().props;
     const { t } = useTranslation();
@@ -64,6 +86,35 @@ export default function Profile({
     } = useTwoFactorAuth();
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
     const prevTwoFactorEnabled = useRef(twoFactorEnabled);
+    const initialPreferences = useMemo(() => {
+        const preferenceMap = new Map(
+            notificationPreferences.map((p) => [p.type_key, p.channels]),
+        );
+
+        return Object.fromEntries(
+            notificationTypes.map((type) => {
+                const stored = preferenceMap.get(type.key) ?? {};
+
+                return [
+                    type.key,
+                    {
+                        database:
+                            stored.database ?? type.default_channels.database,
+                        mail: stored.mail ?? type.default_channels.mail,
+                        slack: stored.slack ?? type.default_channels.slack,
+                    },
+                ];
+            }),
+        ) as Record<
+            string,
+            { database: boolean; mail: boolean; slack: boolean }
+        >;
+    }, [notificationPreferences, notificationTypes]);
+    const [channelsByType, setChannelsByType] = useState(initialPreferences);
+
+    useEffect(() => {
+        setChannelsByType(initialPreferences);
+    }, [initialPreferences]);
 
     useEffect(() => {
         if (prevTwoFactorEnabled.current && !twoFactorEnabled) {
@@ -85,6 +136,20 @@ export default function Profile({
 
             reader.readAsDataURL(file);
         }
+    }
+
+    function setChannel(
+        typeKey: string,
+        channel: 'database' | 'mail' | 'slack',
+        enabled: boolean,
+    ) {
+        setChannelsByType((prev) => ({
+            ...prev,
+            [typeKey]: {
+                ...prev[typeKey],
+                [channel]: enabled,
+            },
+        }));
     }
 
     return (
@@ -204,6 +269,166 @@ export default function Profile({
                         </Card>
                     )}
                 </Form>
+
+                <Card className="max-w-3xl">
+                    <CardHeader>
+                        <CardTitle>
+                            {t('notifications.preferences.title')}
+                        </CardTitle>
+                        <CardDescription>
+                            {t('notifications.preferences.description')}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Form
+                            {...updateNotificationPreferences.form()}
+                            className="space-y-6"
+                            options={{ preserveScroll: true }}
+                        >
+                            {({ processing }) => (
+                                <>
+                                    <div className="space-y-6">
+                                        {notificationTypes.map((type, index) => {
+                                            const channels =
+                                                channelsByType[type.key] ??
+                                                type.default_channels;
+
+                                            return (
+                                                <div
+                                                    key={type.key}
+                                                    className="space-y-3 rounded-lg border p-4"
+                                                >
+                                                    <div className="space-y-1">
+                                                        <div className="font-medium">
+                                                            {t(type.title_key)}
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {t(
+                                                                type.description_key,
+                                                            )}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex flex-wrap gap-4">
+                                                        <label className="flex items-center gap-2 text-sm">
+                                                            <Checkbox
+                                                                checked={
+                                                                    channels.database
+                                                                }
+                                                                onCheckedChange={(
+                                                                    checked,
+                                                                ) =>
+                                                                    setChannel(
+                                                                        type.key,
+                                                                        'database',
+                                                                        checked ===
+                                                                            true,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <span>
+                                                                {t(
+                                                                    'notifications.channels.database',
+                                                                )}
+                                                            </span>
+                                                        </label>
+
+                                                        <label className="flex items-center gap-2 text-sm">
+                                                            <Checkbox
+                                                                checked={
+                                                                    channels.mail
+                                                                }
+                                                                onCheckedChange={(
+                                                                    checked,
+                                                                ) =>
+                                                                    setChannel(
+                                                                        type.key,
+                                                                        'mail',
+                                                                        checked ===
+                                                                            true,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <span>
+                                                                {t(
+                                                                    'notifications.channels.mail',
+                                                                )}
+                                                            </span>
+                                                        </label>
+
+                                                        <label className="flex items-center gap-2 text-sm">
+                                                            <Checkbox
+                                                                checked={
+                                                                    channels.slack
+                                                                }
+                                                                onCheckedChange={(
+                                                                    checked,
+                                                                ) =>
+                                                                    setChannel(
+                                                                        type.key,
+                                                                        'slack',
+                                                                        checked ===
+                                                                            true,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <span>
+                                                                {t(
+                                                                    'notifications.channels.slack',
+                                                                )}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+
+                                                    <input
+                                                        type="hidden"
+                                                        name={`preferences[${index}][type_key]`}
+                                                        value={type.key}
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        name={`preferences[${index}][channels][database]`}
+                                                        value={
+                                                            channels.database
+                                                                ? '1'
+                                                                : '0'
+                                                        }
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        name={`preferences[${index}][channels][mail]`}
+                                                        value={
+                                                            channels.mail
+                                                                ? '1'
+                                                                : '0'
+                                                        }
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        name={`preferences[${index}][channels][slack]`}
+                                                        value={
+                                                            channels.slack
+                                                                ? '1'
+                                                                : '0'
+                                                        }
+                                                    />
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                        <Button disabled={processing}>
+                                            {t(
+                                                'notifications.preferences.actions.save',
+                                            )}
+                                        </Button>
+                                    </div>
+                                </>
+                            )}
+                        </Form>
+                    </CardContent>
+                </Card>
 
                 <section id="security" className="scroll-mt-24 space-y-6">
                     <Heading
@@ -363,15 +588,14 @@ export default function Profile({
 
                                 {showSetupModal && (
                                     <TwoFactorSetupModal
-                                        open={showSetupModal}
-                                        onClose={() => {
-                                            setShowSetupModal(false);
-                                            clearSetupData();
-                                        }}
+                                        isOpen={showSetupModal}
+                                        onClose={() => setShowSetupModal(false)}
+                                        twoFactorEnabled={twoFactorEnabled}
                                         qrCodeSvg={qrCodeSvg}
                                         manualSetupKey={manualSetupKey}
                                         requiresConfirmation={requiresConfirmation}
-                                        fetchRecoveryCodes={fetchRecoveryCodes}
+                                        clearSetupData={clearSetupData}
+                                        fetchSetupData={fetchSetupData}
                                         errors={errors}
                                     />
                                 )}

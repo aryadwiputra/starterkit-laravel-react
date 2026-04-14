@@ -59,6 +59,7 @@ class TranslationsResolver
 
         if (str_starts_with($routeName, 'profile.')) {
             $modules[] = 'profile';
+            $modules[] = 'notifications';
         }
 
         if ($routeName === 'dashboard') {
@@ -78,6 +79,10 @@ class TranslationsResolver
 
         if ($routeName === 'maintenance') {
             $modules[] = 'maintenance';
+        }
+
+        if (str_starts_with($routeName, 'notifications.')) {
+            $modules[] = 'notifications';
         }
 
         return array_values(array_unique($modules));
