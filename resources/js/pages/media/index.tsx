@@ -1,5 +1,6 @@
-import { Head, router, Form } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { Download, FileIcon, Image as ImageIcon, Trash2, Upload } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { Heading } from '@/components/heading';
 import { DataTable } from '@/components/data-table/data-table';
 import { Button } from '@/components/ui/button';
@@ -29,6 +30,13 @@ type Props = {
 
 export default function MediaIndex({ assets }: Props) {
     const { t } = useTranslation();
+    const [title, setTitle] = useState('');
+    const [file, setFile] = useState<File | null>(null);
+    const [uploading, setUploading] = useState(false);
+    const [progress, setProgress] = useState<number | null>(null);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+
+    const chunkingThreshold = useMemo(() => 10 * 1024 * 1024, []); // 10MB
 
     const columns: DataTableColumn<MediaAssetRow>[] = [
         {
@@ -111,6 +119,140 @@ export default function MediaIndex({ assets }: Props) {
         },
     ];
 
+    async function uploadChunked(fileToUpload: File) {
+        const csrf =
+            document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
+
+        const initRes = await fetch('/media/uploads', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf,
+                Accept: 'application/json',
+            },
+            body: JSON.stringify({
+                title: title || null,
+                original_name: fileToUpload.name,
+                mime_type: fileToUpload.type || null,
+                size: fileToUpload.size,
+            }),
+        });
+
+        if (!initRes.ok) {
+            throw new Error(await initRes.text());
+        }
+
+        const init = (await initRes.json()) as {
+            upload_id: string;
+            chunk_size: number;
+            total_chunks: number;
+        };
+
+        try {
+            for (let index = 0; index < init.total_chunks; index++) {
+                const start = index * init.chunk_size;
+                const end = Math.min(fileToUpload.size, start + init.chunk_size);
+                const blob = fileToUpload.slice(start, end);
+
+                const form = new FormData();
+                form.append('index', String(index));
+                form.append('chunk', blob, fileToUpload.name);
+
+                const chunkRes = await fetch(`/media/uploads/${init.upload_id}/chunk`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        Accept: 'application/json',
+                    },
+                    body: form,
+                });
+
+                if (!chunkRes.ok) {
+                    throw new Error(await chunkRes.text());
+                }
+
+                setProgress(Math.round(((index + 1) / init.total_chunks) * 100));
+            }
+
+            const completeRes = await fetch(`/media/uploads/${init.upload_id}/complete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf,
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({ title: title || null }),
+            });
+
+            if (!completeRes.ok) {
+                throw new Error(await completeRes.text());
+            }
+        } catch (e) {
+            await fetch(`/media/uploads/${init.upload_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': csrf,
+                    Accept: 'application/json',
+                },
+            });
+
+            throw e;
+        }
+    }
+
+    async function handleUpload() {
+        if (!file) {
+            return;
+        }
+
+        setUploading(true);
+        setUploadError(null);
+        setProgress(null);
+
+        try {
+            if (file.size > chunkingThreshold) {
+                await uploadChunked(file);
+                router.reload({ only: ['assets'], preserveScroll: true });
+            } else {
+                let ok = true;
+                await new Promise<void>((resolve) => {
+                    router.post(
+                        '/media',
+                        { title: title || null, file },
+                        {
+                            preserveScroll: true,
+                            forceFormData: true,
+                            onProgress: (event) => {
+                                if (event?.percentage !== undefined) {
+                                    setProgress(Math.round(event.percentage));
+                                }
+                            },
+                            onError: (errors) => {
+                                ok = false;
+                                if (errors.file) {
+                                    setUploadError(errors.file);
+                                }
+                            },
+                            onFinish: () => resolve(),
+                        },
+                    );
+                });
+
+                if (!ok) {
+                    return;
+                }
+            }
+
+            setTitle('');
+            setFile(null);
+        } catch (e) {
+            setUploadError(e instanceof Error ? e.message : String(e));
+        } finally {
+            setUploading(false);
+            setTimeout(() => setProgress(null), 800);
+        }
+    }
+
     return (
         <>
             <Head title={t('media.title')} />
@@ -124,33 +266,53 @@ export default function MediaIndex({ assets }: Props) {
                         <CardDescription>{t('media.upload.description')}</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Form
-                            action="/media"
-                            method="post"
-                            encType="multipart/form-data"
-                            className="space-y-4"
-                            options={{ preserveScroll: true }}
-                        >
-                            {({ processing, errors }) => (
-                                <>
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="title">{t('media.fields.title')}</Label>
-                                        <Input id="title" name="title" placeholder={t('media.fields.title_placeholder')} />
-                                    </div>
+                        <div className="space-y-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="title">{t('media.fields.title')}</Label>
+                                <Input
+                                    id="title"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    placeholder={t('media.fields.title_placeholder')}
+                                />
+                            </div>
 
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="file">{t('media.fields.file')}</Label>
-                                        <Input id="file" name="file" type="file" />
-                                        {errors.file && <p className="text-sm text-destructive">{errors.file}</p>}
-                                    </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="file">{t('media.fields.file')}</Label>
+                                <Input
+                                    id="file"
+                                    type="file"
+                                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                                    disabled={uploading}
+                                />
+                                {uploadError && <p className="text-sm text-destructive">{uploadError}</p>}
+                            </div>
 
-                                    <Button type="submit" disabled={processing} className="gap-2">
-                                        <Upload className="h-4 w-4" />
-                                        {t('media.upload.submit')}
-                                    </Button>
-                                </>
+                            {progress !== null && (
+                                <div className="space-y-2">
+                                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                                        <span>{t('media.upload.progress')}</span>
+                                        <span>{progress}%</span>
+                                    </div>
+                                    <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                                        <div
+                                            className="h-full bg-primary transition-all"
+                                            style={{ width: `${progress}%` }}
+                                        />
+                                    </div>
+                                </div>
                             )}
-                        </Form>
+
+                            <Button
+                                type="button"
+                                onClick={handleUpload}
+                                disabled={!file || uploading}
+                                className="gap-2"
+                            >
+                                <Upload className="h-4 w-4" />
+                                {file && file.size > chunkingThreshold ? t('media.upload.submit_large') : t('media.upload.submit')}
+                            </Button>
+                        </div>
                     </CardContent>
                 </Card>
 
@@ -182,4 +344,3 @@ export default function MediaIndex({ assets }: Props) {
         </>
     );
 }
-
