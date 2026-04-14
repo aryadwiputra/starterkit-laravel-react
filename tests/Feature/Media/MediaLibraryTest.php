@@ -84,7 +84,7 @@ test('admin can upload via chunked upload', function () {
     expect($init['total_chunks'])->toBeGreaterThan(1);
 
     for ($i = 0; $i < $init['total_chunks']; $i++) {
-        $chunk = UploadedFile::fake()->create("chunk-{$i}.bin", 10, 'application/octet-stream');
+        $chunk = UploadedFile::fake()->createWithContent("chunk-{$i}.txt", str_repeat('a', 1024));
 
         $this->actingAs($admin)
             ->post("/media/uploads/{$init['upload_id']}/chunk", [
@@ -105,4 +105,3 @@ test('admin can upload via chunked upload', function () {
 
     Storage::disk('local')->assertMissing("tmp/media-uploads/{$init['upload_id']}");
 });
-

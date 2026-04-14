@@ -8,7 +8,7 @@ use App\Models\MediaAsset;
 use App\Services\DataTableService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
@@ -82,7 +82,7 @@ class MediaAssetController extends Controller implements HasMiddleware
         return back();
     }
 
-    public function download(Request $request, MediaAsset $mediaAsset): Response
+    public function download(Request $request, MediaAsset $mediaAsset): StreamedResponse
     {
         $this->authorize('download', $mediaAsset);
 
