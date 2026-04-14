@@ -79,7 +79,12 @@ export default function CreateRole({ permission_groups }: Props) {
                                     {permission_groups.map((group) => (
                                         <div key={group.group} className="space-y-3">
                                             <p className="text-sm font-medium capitalize">
-                                                {t(`roles.permissions.${group.group}`)}
+                                                {(() => {
+                                                    const key = `roles.permissions.${group.group}`;
+                                                    const translated = t(key);
+
+                                                    return translated === key ? group.group : translated;
+                                                })()}
                                             </p>
                                             <div className="grid gap-3 sm:grid-cols-2">
                                                 {group.permissions.map((permission) => (
@@ -94,7 +99,18 @@ export default function CreateRole({ permission_groups }: Props) {
                                                             }
                                                         />
                                                         <span className="capitalize">
-                                                            {permission.label.replaceAll('_', ' ')}
+                                                            {(() => {
+                                                                const key = `roles.permission_labels.${permission.name}`;
+                                                                const translated = t(key);
+
+                                                                if (translated === key) {
+                                                                    return permission.label
+                                                                        .replaceAll('_', ' ')
+                                                                        .replaceAll('.', ' ');
+                                                                }
+
+                                                                return translated;
+                                                            })()}
                                                         </span>
                                                     </label>
                                                 ))}
