@@ -129,6 +129,8 @@ export default function AppSettings({ settings }: Props) {
                                 <CardTitle>{t('settings.app.sections.localization.title')}</CardTitle>
                                 <CardDescription>
                                         {t('settings.app.sections.localization.description')}
+                                        {' '}
+                                        {t('settings.inherit_env_hint')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">

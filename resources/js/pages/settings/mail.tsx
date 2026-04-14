@@ -80,6 +80,8 @@ export default function MailSettings({ settings }: Props) {
                                     <CardTitle>{t('settings.mail.sections.general.title')}</CardTitle>
                                     <CardDescription>
                                         {t('settings.mail.sections.general.description')}
+                                        {' '}
+                                        {t('settings.inherit_env_hint')}
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
@@ -138,6 +140,8 @@ export default function MailSettings({ settings }: Props) {
                                         <CardTitle>{t('settings.mail.sections.smtp.title')}</CardTitle>
                                         <CardDescription>
                                             {t('settings.mail.sections.smtp.description')}
+                                            {' '}
+                                            {t('settings.inherit_env_hint')}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -222,6 +226,8 @@ export default function MailSettings({ settings }: Props) {
                                         <CardTitle>{t('settings.mail.sections.mailgun.title')}</CardTitle>
                                         <CardDescription>
                                             {t('settings.mail.sections.mailgun.description')}
+                                            {' '}
+                                            {t('settings.inherit_env_hint')}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -275,6 +281,8 @@ export default function MailSettings({ settings }: Props) {
                                         <CardTitle>{t('settings.mail.sections.ses.title')}</CardTitle>
                                         <CardDescription>
                                             {t('settings.mail.sections.ses.description')}
+                                            {' '}
+                                            {t('settings.inherit_env_hint')}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -335,6 +343,8 @@ export default function MailSettings({ settings }: Props) {
                                         <CardTitle>{t('settings.mail.sections.resend.title')}</CardTitle>
                                         <CardDescription>
                                             {t('settings.mail.sections.resend.description')}
+                                            {' '}
+                                            {t('settings.inherit_env_hint')}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
@@ -366,6 +376,8 @@ export default function MailSettings({ settings }: Props) {
                                         <CardTitle>{t('settings.mail.sections.postmark.title')}</CardTitle>
                                         <CardDescription>
                                             {t('settings.mail.sections.postmark.description')}
+                                            {' '}
+                                            {t('settings.inherit_env_hint')}
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent className="space-y-4">

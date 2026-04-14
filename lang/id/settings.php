@@ -3,6 +3,7 @@
 return [
     'title' => 'Pengaturan admin',
     'description' => 'Konfigurasi fitur sistem dan integrasi.',
+    'inherit_env_hint' => 'Kosongkan untuk gunakan nilai default dari .env.',
     'cards' => [
         'app' => [
             'title' => 'Pengaturan aplikasi',

@@ -3,6 +3,7 @@
 return [
     'title' => 'Admin settings',
     'description' => 'Configure system-level features and integrations.',
+    'inherit_env_hint' => 'Leave blank to use your .env defaults.',
     'cards' => [
         'app' => [
             'title' => 'App settings',
