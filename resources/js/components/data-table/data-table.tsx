@@ -22,6 +22,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useDataTable } from '@/hooks/use-datatable';
+import { useTranslation } from '@/hooks/use-translation';
 import type { BulkAction, DataTableColumn, DataTableProps, PaginatedData, RowAction } from '@/types/datatable';
 
 export function DataTable<T extends { id: number }>({
@@ -38,6 +39,7 @@ export function DataTable<T extends { id: number }>({
     onBulkAction,
     savedColumnVisibility,
 }: DataTableProps<T>) {
+    const { t } = useTranslation();
     const {
         search,
         setSearch,
@@ -102,7 +104,7 @@ export function DataTable<T extends { id: number }>({
                             <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                             <Input
                                 id="datatable-search"
-                                placeholder="Search..."
+                                placeholder={t('datatable.search')}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="pl-9"
@@ -128,7 +130,9 @@ export function DataTable<T extends { id: number }>({
                                 <SelectValue placeholder={filter.label} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">All {filter.label}</SelectItem>
+                                <SelectItem value="all">
+                                    {t('datatable.filter_all', { label: filter.label })}
+                                </SelectItem>
                                 {filter.options.map((option) => (
                                     <SelectItem key={option.value} value={option.value}>
                                         {option.label}
@@ -141,7 +145,7 @@ export function DataTable<T extends { id: number }>({
                     {hasActiveFilters && (
                         <Button variant="ghost" size="sm" onClick={clearFilters}>
                             <FilterX className="mr-1 h-4 w-4" />
-                            Clear
+                            {t('common.clear')}
                         </Button>
                     )}
                 </div>
@@ -151,7 +155,7 @@ export function DataTable<T extends { id: number }>({
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="sm">
                                 <Columns3 className="mr-1 h-4 w-4" />
-                                Columns
+                                {t('datatable.columns')}
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[180px]">
@@ -172,18 +176,24 @@ export function DataTable<T extends { id: number }>({
                             <DropdownMenuTrigger asChild>
                                 <Button variant="outline" size="sm">
                                     <Download className="mr-1 h-4 w-4" />
-                                    Export
+                                    {t('datatable.export')}
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuItem asChild>
-                                    <a href={`${exportUrl}?format=csv&${new URLSearchParams(window.location.search).toString()}`}>CSV</a>
+                                    <a href={`${exportUrl}?format=csv&${new URLSearchParams(window.location.search).toString()}`}>
+                                        {t('datatable.export_csv')}
+                                    </a>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <a href={`${exportUrl}?format=excel&${new URLSearchParams(window.location.search).toString()}`}>Excel</a>
+                                    <a href={`${exportUrl}?format=excel&${new URLSearchParams(window.location.search).toString()}`}>
+                                        {t('datatable.export_excel')}
+                                    </a>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <a href={`${exportUrl}?format=pdf&${new URLSearchParams(window.location.search).toString()}`}>PDF</a>
+                                    <a href={`${exportUrl}?format=pdf&${new URLSearchParams(window.location.search).toString()}`}>
+                                        {t('datatable.export_pdf')}
+                                    </a>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -194,7 +204,9 @@ export function DataTable<T extends { id: number }>({
             {/* Bulk Actions Bar */}
             {selectedIds.length > 0 && bulkActions.length > 0 && (
                 <div className="flex items-center gap-3 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2">
-                    <span className="text-sm font-medium">{selectedIds.length} selected</span>
+                    <span className="text-sm font-medium">
+                        {t('datatable.selected', { count: selectedIds.length })}
+                    </span>
                     <div className="flex items-center gap-2">
                         {bulkActions.map((action) => (
                             <Button
@@ -209,7 +221,7 @@ export function DataTable<T extends { id: number }>({
                         ))}
                     </div>
                     <Button variant="ghost" size="sm" className="ml-auto" onClick={clearSelection}>
-                        Clear selection
+                        {t('datatable.clear_selection')}
                     </Button>
                 </div>
             )}
@@ -248,7 +260,11 @@ export function DataTable<T extends { id: number }>({
                                         )}
                                     </th>
                                 ))}
-                                {rowActions.length > 0 && <th className="w-[60px] px-4 py-3 text-right font-medium text-muted-foreground">Actions</th>}
+                                {rowActions.length > 0 && (
+                                    <th className="w-[60px] px-4 py-3 text-right font-medium text-muted-foreground">
+                                        {t('common.actions')}
+                                    </th>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
@@ -258,7 +274,7 @@ export function DataTable<T extends { id: number }>({
                                         colSpan={visibleColumns.length + (bulkActions.length > 0 ? 1 : 0) + (rowActions.length > 0 ? 1 : 0)}
                                         className="px-4 py-12 text-center text-muted-foreground"
                                     >
-                                        No results found.
+                                        {t('datatable.no_results')}
                                     </td>
                                 </tr>
                             ) : (
@@ -296,18 +312,21 @@ export function DataTable<T extends { id: number }>({
             <Dialog open={!!confirmAction} onOpenChange={(open) => !open && setConfirmAction(null)}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Confirm Action</DialogTitle>
+                        <DialogTitle>{t('datatable.confirm_title')}</DialogTitle>
                         <DialogDescription>
                             {confirmAction?.action.confirmMessage ||
-                                `Are you sure you want to ${confirmAction?.action.label.toLowerCase()} ${confirmAction?.ids.length} items?`}
+                                t('datatable.confirm_description', {
+                                    action: confirmAction?.action.label.toLowerCase() ?? '',
+                                    count: confirmAction?.ids.length ?? 0,
+                                })}
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline">{t('common.cancel')}</Button>
                         </DialogClose>
                         <Button variant={confirmAction?.action.variant === 'destructive' ? 'destructive' : 'default'} onClick={confirmBulkAction}>
-                            Confirm
+                            {t('common.confirm')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -359,21 +378,27 @@ function DataTablePagination<T>({
     setPerPage: (value: number) => void;
     goToPage: (page: number) => void;
 }) {
+    const { t } = useTranslation();
+
     return (
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <div className="text-sm text-muted-foreground">
                 {data.from && data.to ? (
                     <>
-                        Showing {data.from} to {data.to} of {data.total} results
+                        {t('datatable.showing', {
+                            from: data.from,
+                            to: data.to,
+                            total: data.total,
+                        })}
                     </>
                 ) : (
-                    'No results'
+                    t('datatable.no_results')
                 )}
             </div>
 
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">Rows per page</span>
+                    <span className="text-sm text-muted-foreground">{t('datatable.rows_per_page')}</span>
                     <Select value={String(perPage)} onValueChange={(v) => setPerPage(Number(v))}>
                         <SelectTrigger id="rows-per-page" className="w-[70px]">
                             <SelectValue />
@@ -390,10 +415,10 @@ function DataTablePagination<T>({
 
                 <div className="flex items-center gap-1">
                     <Button variant="outline" size="sm" disabled={data.current_page === 1} onClick={() => goToPage(1)}>
-                        First
+                        {t('datatable.first')}
                     </Button>
                     <Button variant="outline" size="sm" disabled={data.current_page === 1} onClick={() => goToPage(data.current_page - 1)}>
-                        Prev
+                        {t('datatable.prev')}
                     </Button>
 
                     {generatePageNumbers(data.current_page, data.last_page).map((page, index) =>
@@ -415,10 +440,10 @@ function DataTablePagination<T>({
                     )}
 
                     <Button variant="outline" size="sm" disabled={data.current_page === data.last_page} onClick={() => goToPage(data.current_page + 1)}>
-                        Next
+                        {t('datatable.next')}
                     </Button>
                     <Button variant="outline" size="sm" disabled={data.current_page === data.last_page} onClick={() => goToPage(data.last_page)}>
-                        Last
+                        {t('datatable.last')}
                     </Button>
                 </div>
             </div>
