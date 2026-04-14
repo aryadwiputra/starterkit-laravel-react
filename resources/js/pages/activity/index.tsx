@@ -117,7 +117,6 @@ export default function ActivityIndex({ activities, log_names, events }: Props) 
                 key: 'event',
                 label: t('activity.filters.event'),
                 options: [
-                    { label: t('activity.filters.all'), value: '' },
                     ...events.map((e) => ({
                         label: t(`activity.events.${e}`),
                         value: e,
@@ -128,7 +127,6 @@ export default function ActivityIndex({ activities, log_names, events }: Props) 
                 key: 'log_name',
                 label: t('activity.filters.log'),
                 options: [
-                    { label: t('activity.filters.all'), value: '' },
                     ...log_names.map((name) => ({ label: name, value: name })),
                 ],
             },
