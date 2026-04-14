@@ -45,6 +45,11 @@ class MailSettingsApplier
     private function applySmtp(array &$config): void
     {
         $host = $this->settings->get('mail.smtp.host');
+        $hostEnv = config('mail.mailers.smtp.host');
+
+        if (! is_string($host) || $host === '') {
+            $host = $hostEnv;
+        }
 
         if (! is_string($host) || $host === '') {
             return;
@@ -82,6 +87,17 @@ class MailSettingsApplier
         $domain = $this->settings->get('mail.mailgun.domain');
         $secret = $this->settings->get('mail.mailgun.secret');
 
+        $domainEnv = config('services.mailgun.domain');
+        $secretEnv = config('services.mailgun.secret');
+
+        if (! is_string($domain) || $domain === '') {
+            $domain = $domainEnv;
+        }
+
+        if (! is_string($secret) || $secret === '') {
+            $secret = $secretEnv;
+        }
+
         if (! is_string($domain) || $domain === '' || ! is_string($secret) || $secret === '') {
             return;
         }
@@ -105,6 +121,22 @@ class MailSettingsApplier
         $secret = $this->settings->get('mail.ses.secret');
         $region = $this->settings->get('mail.ses.region');
 
+        $keyEnv = config('services.ses.key');
+        $secretEnv = config('services.ses.secret');
+        $regionEnv = config('services.ses.region');
+
+        if (! is_string($key) || $key === '') {
+            $key = $keyEnv;
+        }
+
+        if (! is_string($secret) || $secret === '') {
+            $secret = $secretEnv;
+        }
+
+        if (! is_string($region) || $region === '') {
+            $region = $regionEnv;
+        }
+
         if (! is_string($key) || $key === '' || ! is_string($secret) || $secret === '') {
             return;
         }
@@ -126,6 +158,10 @@ class MailSettingsApplier
         $key = $this->settings->get('mail.postmark.key');
 
         if (! is_string($key) || $key === '') {
+            $key = config('services.postmark.key');
+        }
+
+        if (! is_string($key) || $key === '') {
             return;
         }
 
@@ -139,6 +175,10 @@ class MailSettingsApplier
     private function applyResend(array &$config): void
     {
         $key = $this->settings->get('mail.resend.key');
+
+        if (! is_string($key) || $key === '') {
+            $key = config('services.resend.key');
+        }
 
         if (! is_string($key) || $key === '') {
             return;

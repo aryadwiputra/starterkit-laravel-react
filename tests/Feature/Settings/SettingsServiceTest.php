@@ -35,3 +35,16 @@ test('encrypted settings are stored encrypted and returned decrypted', function 
 
     expect(settings('mail.smtp.password'))->toBe('secret');
 });
+
+test('empty strings unset values and fall back to default', function () {
+    /** @var SettingsService $service */
+    $service = app(SettingsService::class);
+
+    $service->set('app.name', 'My App', 'string');
+    expect(settings('app.name', 'Default App'))->toBe('My App');
+
+    $service->set('app.name', '   ', 'string');
+
+    expect(settings('app.name', 'Default App'))->toBe('Default App');
+    expect(Setting::query()->where('key', 'app.name')->exists())->toBeFalse();
+});

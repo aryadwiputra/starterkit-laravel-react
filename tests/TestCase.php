@@ -14,6 +14,7 @@ abstract class TestCase extends BaseTestCase
 
         try {
             Cache::store('redis')->forget('settings:all');
+            Cache::store('redis')->forget('feature-flags:all');
         } catch (\Throwable) {
             // Ignore cache failures during tests.
         }

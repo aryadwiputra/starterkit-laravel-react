@@ -25,6 +25,12 @@ class UpdateMailSettingsRequest extends FormRequest
     {
         $default = (string) $this->input('default', '');
 
+        $hasMailgunSecret = (bool) (settings('mail.mailgun.secret') ?: config('services.mailgun.secret'));
+        $hasSesKey = (bool) (settings('mail.ses.key') ?: config('services.ses.key'));
+        $hasSesSecret = (bool) (settings('mail.ses.secret') ?: config('services.ses.secret'));
+        $hasResendKey = (bool) (settings('mail.resend.key') ?: config('services.resend.key'));
+        $hasPostmarkKey = (bool) (settings('mail.postmark.key') ?: config('services.postmark.key'));
+
         return [
             'default' => ['required', 'string', Rule::in(['smtp', 'mailgun', 'ses', 'resend', 'postmark', 'log'])],
             'from_address' => ['nullable', 'string', 'email', 'max:255'],
@@ -32,15 +38,15 @@ class UpdateMailSettingsRequest extends FormRequest
 
             // SMTP
             'smtp_scheme' => ['nullable', 'string', Rule::in(['smtp', 'smtps'])],
-            'smtp_host' => [$default === 'smtp' ? 'required' : 'nullable', 'string', 'max:255'],
+            'smtp_host' => [$default === 'smtp' && ! config('mail.mailers.smtp.host') ? 'required' : 'nullable', 'string', 'max:255'],
             'smtp_port' => ['nullable', 'integer', 'min:1', 'max:65535'],
             'smtp_username' => ['nullable', 'string', 'max:255'],
             'smtp_password' => ['nullable', 'string', 'max:255'],
 
             // Mailgun
-            'mailgun_domain' => [$default === 'mailgun' ? 'required' : 'nullable', 'string', 'max:255'],
+            'mailgun_domain' => [$default === 'mailgun' && ! config('services.mailgun.domain') ? 'required' : 'nullable', 'string', 'max:255'],
             'mailgun_secret' => [
-                $default === 'mailgun' && ! settings('mail.mailgun.secret') ? 'required' : 'nullable',
+                $default === 'mailgun' && ! $hasMailgunSecret ? 'required' : 'nullable',
                 'string',
                 'max:255',
             ],
@@ -48,27 +54,27 @@ class UpdateMailSettingsRequest extends FormRequest
 
             // SES
             'ses_key' => [
-                $default === 'ses' && ! settings('mail.ses.key') ? 'required' : 'nullable',
+                $default === 'ses' && ! $hasSesKey ? 'required' : 'nullable',
                 'string',
                 'max:255',
             ],
             'ses_secret' => [
-                $default === 'ses' && ! settings('mail.ses.secret') ? 'required' : 'nullable',
+                $default === 'ses' && ! $hasSesSecret ? 'required' : 'nullable',
                 'string',
                 'max:255',
             ],
-            'ses_region' => [$default === 'ses' ? 'required' : 'nullable', 'string', 'max:255'],
+            'ses_region' => [$default === 'ses' && ! config('services.ses.region') ? 'required' : 'nullable', 'string', 'max:255'],
 
             // Resend
             'resend_key' => [
-                $default === 'resend' && ! settings('mail.resend.key') ? 'required' : 'nullable',
+                $default === 'resend' && ! $hasResendKey ? 'required' : 'nullable',
                 'string',
                 'max:255',
             ],
 
             // Postmark
             'postmark_key' => [
-                $default === 'postmark' && ! settings('mail.postmark.key') ? 'required' : 'nullable',
+                $default === 'postmark' && ! $hasPostmarkKey ? 'required' : 'nullable',
                 'string',
                 'max:255',
             ],

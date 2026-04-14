@@ -33,21 +33,21 @@ class MailSettingsController extends Controller
                 'smtp_host' => settings('mail.smtp.host', config('mail.mailers.smtp.host')),
                 'smtp_port' => settings('mail.smtp.port', config('mail.mailers.smtp.port')),
                 'smtp_username' => settings('mail.smtp.username', config('mail.mailers.smtp.username')),
-                'has_smtp_password' => (bool) settings('mail.smtp.password'),
+                'has_smtp_password' => (bool) (settings('mail.smtp.password') ?: config('mail.mailers.smtp.password')),
 
                 // Mailgun (non-secret)
                 'mailgun_domain' => settings('mail.mailgun.domain', config('services.mailgun.domain')),
                 'mailgun_endpoint' => settings('mail.mailgun.endpoint', config('services.mailgun.endpoint')),
-                'has_mailgun_secret' => (bool) settings('mail.mailgun.secret'),
+                'has_mailgun_secret' => (bool) (settings('mail.mailgun.secret') ?: config('services.mailgun.secret')),
 
                 // SES (non-secret)
                 'ses_region' => settings('mail.ses.region', config('services.ses.region')),
-                'has_ses_key' => (bool) settings('mail.ses.key'),
-                'has_ses_secret' => (bool) settings('mail.ses.secret'),
+                'has_ses_key' => (bool) (settings('mail.ses.key') ?: config('services.ses.key')),
+                'has_ses_secret' => (bool) (settings('mail.ses.secret') ?: config('services.ses.secret')),
 
                 // Resend/Postmark (secret only)
-                'has_resend_key' => (bool) settings('mail.resend.key'),
-                'has_postmark_key' => (bool) settings('mail.postmark.key'),
+                'has_resend_key' => (bool) (settings('mail.resend.key') ?: config('services.resend.key')),
+                'has_postmark_key' => (bool) (settings('mail.postmark.key') ?: config('services.postmark.key')),
             ],
         ]);
     }

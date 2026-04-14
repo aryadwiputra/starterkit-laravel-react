@@ -35,6 +35,13 @@ class SettingsService
     {
         $prepared = $this->prepareForStorage($value, $type, $encrypted);
 
+        if ($prepared['value'] === null) {
+            Setting::query()->where('key', $key)->delete();
+            $this->forgetCache();
+
+            return;
+        }
+
         Setting::query()->updateOrCreate(
             ['key' => $key],
             [
@@ -118,6 +125,14 @@ class SettingsService
             'json', 'array' => 'json',
             default => 'string',
         };
+
+        if ($normalizedType === 'string' && is_string($value)) {
+            $value = trim($value);
+
+            if ($value === '') {
+                $value = null;
+            }
+        }
 
         $stringValue = match ($normalizedType) {
             'bool' => $value === null ? null : ((bool) $value ? '1' : '0'),
