@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Http\Requests\DataTableRequest;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DataTableService
 {

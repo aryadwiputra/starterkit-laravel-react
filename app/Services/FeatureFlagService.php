@@ -24,17 +24,17 @@ class FeatureFlagService
 
         $flag = $flags[$key];
 
-        if (! ($flag['enabled'] ?? false)) {
+        if (! $flag['enabled']) {
             return false;
         }
 
-        $environments = $flag['environments'] ?? null;
+        $environments = $flag['environments'];
         if (is_array($environments) && ! empty($environments) && ! in_array(app()->environment(), $environments, true)) {
             return false;
         }
 
-        $allowedRoleNames = $flag['roles'] ?? [];
-        $allowedUserIds = $flag['users'] ?? [];
+        $allowedRoleNames = $flag['roles'];
+        $allowedUserIds = $flag['users'];
 
         $hasTargeting = ! empty($allowedRoleNames) || ! empty($allowedUserIds);
 

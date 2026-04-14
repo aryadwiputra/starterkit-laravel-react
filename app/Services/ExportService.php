@@ -93,7 +93,7 @@ class DataExport implements FromCollection, WithHeadings
     {
         $keys = array_keys($this->columnMap);
 
-        return $this->data->map(function ($item) use ($keys) {
+        return $this->data->values()->map(function ($item) use ($keys) {
             return collect($keys)->map(function ($key) use ($item) {
                 $value = data_get($item, $key);
 
@@ -102,8 +102,8 @@ class DataExport implements FromCollection, WithHeadings
                 }
 
                 return (string) ($value ?? '');
-            })->toArray();
-        });
+            })->values()->all();
+        })->values();
     }
 
     /**

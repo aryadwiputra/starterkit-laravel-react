@@ -1,0 +1,19 @@
+includes:
+  - vendor/larastan/larastan/extension.neon
+
+parameters:
+  level: 6
+  treatPhpDocTypesAsCertain: false
+  checkModelProperties: false
+  paths:
+    - app
+    - database
+    - routes
+  tmpDir: storage/framework/phpstan
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    - '#does not specify its types:#'
+    - '#Unable to resolve the template type#'
+    - '#on left side of \\?\\? always exists and is not nullable#'
+    - '#should return Illuminate\\\\Support\\\\Collection#'
+    - '#ImageDriver::nonQueued#'

@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,7 +31,10 @@ class NotificationsController extends Controller
             $query->whereNotNull('read_at');
         }
 
-        $notifications = $query->paginate(20)->through(function (DatabaseNotification $notification) {
+        /** @var LengthAwarePaginator $notifications */
+        $notifications = $query->paginate(20);
+
+        $notifications = $notifications->through(function (DatabaseNotification $notification) {
             $data = is_array($notification->data) ? $notification->data : [];
 
             return [

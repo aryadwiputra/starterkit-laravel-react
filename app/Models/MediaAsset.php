@@ -16,7 +16,7 @@ class MediaAsset extends Model implements HasMedia
     use InteractsWithMedia, LogsActivity;
 
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = [
         'title',

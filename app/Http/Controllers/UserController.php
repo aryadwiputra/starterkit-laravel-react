@@ -199,7 +199,7 @@ class UserController extends Controller implements HasMiddleware
      */
     public function bulkAction(BulkUserActionRequest $request): RedirectResponse
     {
-        $action = $request->validated('action');
+        $action = (string) $request->validated('action');
         $userIds = $request->validated('user_ids');
 
         // Exclude current user from bulk actions
@@ -222,12 +222,14 @@ class UserController extends Controller implements HasMiddleware
                     $user->delete();
                 }
             }),
+            default => null,
         };
 
         $message = match ($action) {
             'activate' => __('users.toast.activated', ['count' => $users->count()]),
             'deactivate' => __('users.toast.deactivated', ['count' => $users->count()]),
             'delete' => __('users.toast.bulk_deleted'),
+            default => __('users.toast.updated'),
         };
 
         Inertia::flash('toast', ['type' => 'success', 'message' => $message]);

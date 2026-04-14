@@ -15,8 +15,7 @@ class SlackWebhookChannel
         }
 
         $url = settings('notifications.slack.webhook_url')
-            ?? config('services.slack.notifications.webhook_url')
-            ?? env('SLACK_WEBHOOK_URL');
+            ?? config('services.slack.notifications.webhook_url');
 
         if (! is_string($url) || $url === '') {
             return;

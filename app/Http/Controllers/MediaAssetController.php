@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\StoreMediaAssetRequest;
 use App\Models\MediaAsset;
+use App\Models\User;
 use App\Services\DataTableService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MediaAssetController extends Controller implements HasMiddleware
 {
@@ -89,7 +90,7 @@ class MediaAssetController extends Controller implements HasMiddleware
         /** @var Media|null $media */
         $media = $mediaAsset->getFirstMedia('file');
 
-        abort_unless($media, 404);
+        abort_unless($media !== null, 404);
 
         return Storage::disk($media->disk)->download(
             $media->getPathRelativeToRoot(),
@@ -122,7 +123,12 @@ class MediaAssetController extends Controller implements HasMiddleware
             'id' => $asset->id,
             'title' => $asset->title,
             'uploaded_by' => $asset->uploadedBy
-                ? ['id' => $asset->uploadedBy->id, 'name' => $asset->uploadedBy->name]
+                ? (function () use ($asset): array {
+                    /** @var User $uploadedBy */
+                    $uploadedBy = $asset->uploadedBy;
+
+                    return ['id' => $uploadedBy->id, 'name' => $uploadedBy->name];
+                })()
                 : null,
             'file' => $media
                 ? [

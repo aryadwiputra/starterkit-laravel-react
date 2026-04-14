@@ -20,24 +20,36 @@ class HealthController extends Controller
         $degraded = false;
 
         $checks['database'] = $this->checkDatabase();
-        $degraded = $degraded || ! $checks['database']['ok'];
+        if (! $checks['database']['ok']) {
+            $degraded = true;
+        }
 
         $checks['cache_default'] = $this->checkCache(config('cache.default'));
-        $degraded = $degraded || ! $checks['cache_default']['ok'];
+        if (! $checks['cache_default']['ok']) {
+            $degraded = true;
+        }
 
         $checks['cache_redis'] = $this->checkRedisCache();
         if ($checks['cache_redis']['ok'] !== null) {
-            $degraded = $degraded || ! $checks['cache_redis']['ok'];
+            if (! $checks['cache_redis']['ok']) {
+                $degraded = true;
+            }
         }
 
         $checks['queue'] = $this->checkQueue();
-        $degraded = $degraded || ! $checks['queue']['ok'];
+        if (! $checks['queue']['ok']) {
+            $degraded = true;
+        }
 
         $checks['storage_default'] = $this->checkStorage(config('filesystems.default'));
-        $degraded = $degraded || ! $checks['storage_default']['ok'];
+        if (! $checks['storage_default']['ok']) {
+            $degraded = true;
+        }
 
         $checks['storage_media'] = $this->checkStorage(config('media-library.disk_name', 'public'));
-        $degraded = $degraded || ! $checks['storage_media']['ok'];
+        if (! $checks['storage_media']['ok']) {
+            $degraded = true;
+        }
 
         $payload = [
             'status' => $degraded ? 'degraded' : 'ok',

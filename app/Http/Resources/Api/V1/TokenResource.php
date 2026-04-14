@@ -5,9 +5,6 @@ namespace App\Http\Resources\Api\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/**
- * @mixin array{token: string, token_type: string}
- */
 class TokenResource extends JsonResource
 {
     /**
@@ -15,9 +12,12 @@ class TokenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        /** @var array{token: string, token_type: string} $resource */
+        $resource = $this->resource;
+
         return [
-            'token' => $this->resource['token'],
-            'token_type' => $this->resource['token_type'],
+            'token' => $resource['token'],
+            'token_type' => $resource['token_type'],
         ];
     }
 }
