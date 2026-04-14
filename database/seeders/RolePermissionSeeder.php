@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
         'user' => ['view', 'create', 'edit', 'delete', 'impersonate'],
         'role' => ['view', 'create', 'edit', 'delete'],
         'settings' => ['app.manage', 'mail.manage', 'flags.manage'],
+        'media' => ['manage'],
     ];
 
     /**
@@ -38,6 +39,7 @@ class RolePermissionSeeder extends Seeder
             'settings.app.manage',
             'settings.mail.manage',
             'settings.flags.manage',
+            'media.manage',
         ],
         'user' => [],
     ];

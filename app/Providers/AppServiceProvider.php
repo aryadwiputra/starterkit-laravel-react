@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Listeners\ApplyNotificationPreferences;
+use App\Models\MediaAsset;
+use App\Policies\MediaAssetPolicy;
 use App\Policies\RolePolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -64,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureAuthorization(): void
     {
+        Gate::policy(MediaAsset::class, MediaAssetPolicy::class);
         Gate::policy(Role::class, RolePolicy::class);
 
         Gate::before(function ($user, $ability) {
