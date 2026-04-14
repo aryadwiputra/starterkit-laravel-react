@@ -1,5 +1,5 @@
-import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { BookOpen, Bell, Check, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -31,9 +34,11 @@ import {
 import { UserMenuContent } from '@/components/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
+import { useNotificationsPoll } from '@/hooks/use-notifications-poll';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn, toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import { index as notificationsIndex, read as readNotification, readAll as readAllNotifications } from '@/routes/notifications';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
@@ -49,6 +54,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     const getInitials = useInitials();
     const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
     const { t } = useTranslation();
+    const { unreadCount, latest } = useNotificationsPoll();
 
     const mainNavItems: NavItem[] = [
         {
@@ -212,6 +218,102 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 ))}
                             </div>
                         </div>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="relative h-9 w-9"
+                                >
+                                    <Bell className="h-5 w-5 opacity-80" />
+                                    {unreadCount > 0 && (
+                                        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-white">
+                                            {unreadCount > 99 ? '99+' : unreadCount}
+                                        </span>
+                                    )}
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-80" align="end">
+                                <DropdownMenuLabel>
+                                    {t('notifications.bell.title')}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+
+                                {latest.length === 0 ? (
+                                    <div className="px-2 py-3 text-sm text-muted-foreground">
+                                        {t('notifications.bell.empty')}
+                                    </div>
+                                ) : (
+                                    <div className="max-h-80 overflow-auto">
+                                        {latest.map((n) => (
+                                            <DropdownMenuItem
+                                                key={n.id}
+                                                className="flex flex-col items-start gap-1 py-2"
+                                                onSelect={(e) => {
+                                                    e.preventDefault();
+
+                                                    router.post(
+                                                        readNotification({
+                                                            notification: n.id,
+                                                        }).url,
+                                                        {},
+                                                        {
+                                                            preserveScroll: true,
+                                                            onSuccess: () => {
+                                                                if (n.url) {
+                                                                    router.visit(n.url);
+                                                                }
+                                                            },
+                                                        },
+                                                    );
+                                                }}
+                                            >
+                                                <div className="w-full">
+                                                    <div className="flex items-start justify-between gap-2">
+                                                        <span className="truncate text-sm font-medium">
+                                                            {n.title ?? n.type}
+                                                        </span>
+                                                        {!n.read_at && (
+                                                            <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                                                        )}
+                                                    </div>
+                                                    {n.body && (
+                                                        <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                                                            {n.body}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </DropdownMenuItem>
+                                        ))}
+                                    </div>
+                                )}
+
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault();
+                                        router.post(
+                                            readAllNotifications().url,
+                                            {},
+                                            { preserveScroll: true },
+                                        );
+                                    }}
+                                >
+                                    <Check className="h-4 w-4" />
+                                    {t('notifications.actions.mark_all_read')}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={(e) => {
+                                        e.preventDefault();
+                                        router.visit(notificationsIndex().url);
+                                    }}
+                                >
+                                    {t('notifications.actions.view_all')}
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
