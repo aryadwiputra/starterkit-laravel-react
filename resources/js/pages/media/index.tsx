@@ -1,7 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import { Download, FileIcon, Image as ImageIcon, Trash2, Upload } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Heading } from '@/components/heading';
+import Heading from '@/components/heading';
 import { DataTable } from '@/components/data-table/data-table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -214,7 +214,7 @@ export default function MediaIndex({ assets }: Props) {
         try {
             if (file.size > chunkingThreshold) {
                 await uploadChunked(file);
-                router.reload({ only: ['assets'], preserveScroll: true });
+                router.get(mediaIndex().url, {}, { only: ['assets'], preserveScroll: true, preserveState: true });
             } else {
                 let ok = true;
                 await new Promise<void>((resolve) => {

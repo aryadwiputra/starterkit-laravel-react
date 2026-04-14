@@ -68,7 +68,7 @@ export default function RolesIndex({ roles }: Props) {
             key: 'edit',
             label: t('common.edit'),
             icon: <Pencil className="mr-2 h-4 w-4" />,
-            onClick: (role) => router.visit(RoleController.edit.url({ role: role.id })),
+            onClick: (role) => router.visit(RoleController.edit.url({ role: String(role.id) })),
             visible: (role) => canEdit && role.name !== 'super-admin',
         },
         {
@@ -78,7 +78,7 @@ export default function RolesIndex({ roles }: Props) {
             variant: 'destructive',
             onClick: (role) => {
                 if (confirm(t('roles.actions.delete_confirm', { name: role.name }))) {
-                    router.delete(RoleController.destroy.url({ role: role.id }));
+                    router.delete(RoleController.destroy.url({ role: String(role.id) }));
                 }
             },
             visible: (role) => canDelete && role.name !== 'super-admin',
