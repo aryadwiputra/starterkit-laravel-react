@@ -25,6 +25,7 @@ return [
     'add' => 'Add',
     'remove' => 'Remove',
     'delete' => 'Delete',
+    'edit' => 'Edit',
     'clear' => 'Clear',
     'actions' => 'Actions',
     'confirm' => 'Confirm',

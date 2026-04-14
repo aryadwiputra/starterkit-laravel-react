@@ -25,6 +25,7 @@ return [
     'add' => 'Tambah',
     'remove' => 'Hapus',
     'delete' => 'Hapus',
+    'edit' => 'Edit',
     'clear' => 'Bersihkan',
     'actions' => 'Aksi',
     'confirm' => 'Konfirmasi',
