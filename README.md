@@ -155,6 +155,19 @@ composer run dev
 
 ---
 
+## Developer Experience (DX)
+
+Starter kit ini menekankan DX agar developer bisa produktif dari hari pertama:
+
+- Generator module: `php artisan make:module Post`
+- Type-safe shared props Inertia: `composer inertia:types`
+- IDE helper (PhpStorm/Intelephense): `composer ide-helper`
+- Quality gate via Husky (pre-commit): lint-staged (auto-fix JS/TS) + Pint/PHPStan (block PHP)
+
+Dokumentasi lengkap: `docs/developer-experience.md`.
+
+---
+
 ## Environment Variables (umum)
 
 Lihat `.env.example` untuk daftar lengkap. Beberapa yang sering dipakai:
