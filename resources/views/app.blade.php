@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="app-name" content="{{ settings('app.name', config('app.name', 'Laravel')) }}">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
@@ -40,7 +41,6 @@
         @viteReactRefresh
         @vite(['resources/css/app.css', 'resources/js/app.tsx', "resources/js/pages/{$page['component']}.tsx"])
         <x-inertia::head>
-            <meta name="app-name" content="{{ settings('app.name', config('app.name', 'Laravel')) }}">
             <title>{{ settings('app.name', config('app.name', 'Laravel')) }}</title>
         </x-inertia::head>
     </head>
