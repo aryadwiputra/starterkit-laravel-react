@@ -17,9 +17,19 @@ import AppLogo from '@/components/app-logo';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/hooks/use-translation';
 import { dashboard, login, register } from '@/routes';
 import { health as apiHealth } from '@/routes/api';
+import { update as updateLocale } from '@/routes/locale';
 
 type Props = {
     canRegister?: boolean;
@@ -27,9 +37,12 @@ type Props = {
 
 export default function Welcome({ canRegister = true }: Props) {
     const { t } = useTranslation();
-    const { auth, name } = usePage().props as {
+    const { auth, name, locale, availableLocales, localeLabels } = usePage().props as {
         auth: { user: unknown | null };
         name: string;
+        locale: string;
+        availableLocales: string[];
+        localeLabels: Record<string, string>;
     };
 
     const featureCards = [
@@ -81,6 +94,8 @@ export default function Welcome({ canRegister = true }: Props) {
         },
     ] as const;
 
+    const currentLocaleLabel = localeLabels[locale] ?? locale;
+
     return (
         <>
             <Head title={t('welcome.meta_title', { app: name })} />
@@ -119,6 +134,34 @@ export default function Welcome({ canRegister = true }: Props) {
                                     {t('welcome.nav.links')}
                                 </a>
                             </div>
+
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="sm">
+                                        {currentLocaleLabel}
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end" className="min-w-40">
+                                    <DropdownMenuLabel>{t('common.language')}</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuRadioGroup
+                                        value={locale}
+                                        onValueChange={(value) =>
+                                            router.post(
+                                                updateLocale().url,
+                                                { locale: value },
+                                                { preserveScroll: true },
+                                            )
+                                        }
+                                    >
+                                        {availableLocales.map((option) => (
+                                            <DropdownMenuRadioItem key={option} value={option}>
+                                                {localeLabels[option] ?? option}
+                                            </DropdownMenuRadioItem>
+                                        ))}
+                                    </DropdownMenuRadioGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
 
                             {auth.user ? (
                                 <Button asChild variant="outline" size="sm">
