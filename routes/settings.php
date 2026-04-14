@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\ActivityLogController;
 use App\Http\Controllers\Settings\AppSettingsController;
 use App\Http\Controllers\Settings\FeatureFlagsController;
 use App\Http\Controllers\Settings\MailSettingsController;
@@ -25,6 +26,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('user-password.update');
 
     // Admin settings
+    Route::get('settings/activity', [ActivityLogController::class, 'index'])->name('activity.index');
+
     Route::get('settings/app', [AppSettingsController::class, 'edit'])->name('app-settings.edit');
     Route::patch('settings/app', [AppSettingsController::class, 'update'])->name('app-settings.update');
 
