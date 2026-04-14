@@ -1,3 +1,4 @@
+import Api from './Api'
 import LocaleController from './LocaleController'
 import UserController from './UserController'
 import RoleController from './RoleController'
@@ -9,6 +10,7 @@ import MediaAssetController from './MediaAssetController'
 import MediaUploadController from './MediaUploadController'
 
 const Controllers = {
+    Api: Object.assign(Api, Api),
     LocaleController: Object.assign(LocaleController, LocaleController),
     UserController: Object.assign(UserController, UserController),
     RoleController: Object.assign(RoleController, RoleController),
