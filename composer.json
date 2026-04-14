@@ -26,7 +26,9 @@
         "spatie/laravel-permission": "^7.3"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.7",
         "fakerphp/faker": "^1.24",
+        "larastan/larastan": "^3.9",
         "laravel/boost": "^2.2",
         "laravel/pail": "^1.2.5",
         "laravel/pint": "^1.27",
@@ -71,11 +73,25 @@
         "lint:check": [
             "pint --parallel --test"
         ],
+        "analyze": [
+            "vendor/bin/phpstan analyse --debug --no-progress --memory-limit=1G"
+        ],
+        "ide-helper": [
+            "@php artisan ide-helper:generate --no-interaction",
+            "@php artisan ide-helper:meta --no-interaction"
+        ],
+        "inertia:types": [
+            "@php artisan inertia:types --no-interaction"
+        ],
+        "test:coverage": [
+            "@php artisan test --coverage"
+        ],
         "ci:check": [
             "Composer\\Config::disableProcessTimeout",
             "npm run lint:check",
             "npm run format:check",
             "npm run types:check",
+            "@analyze",
             "@test"
         ],
         "test": [
