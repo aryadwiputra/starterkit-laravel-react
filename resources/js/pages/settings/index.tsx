@@ -5,6 +5,7 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useCan } from '@/hooks/use-permission';
+import { useTranslation } from '@/hooks/use-translation';
 import { edit as editAppSettings } from '@/routes/app-settings';
 import { index as featureFlagsIndex } from '@/routes/feature-flags';
 import { edit as editMailSettings } from '@/routes/mail-settings';
@@ -22,25 +23,26 @@ export default function SettingsIndex() {
     const canManageApp = useCan('settings.app.manage');
     const canManageMail = useCan('settings.mail.manage');
     const canManageFlags = useCan('settings.flags.manage');
+    const { t } = useTranslation();
 
     const cards: SettingsCard[] = [
         {
-            title: 'App settings',
-            description: 'Update app identity, locale, and maintenance mode.',
+            title: t('settings.cards.app.title'),
+            description: t('settings.cards.app.description'),
             href: editAppSettings(),
             icon: Sliders,
             visible: canManageApp,
         },
         {
-            title: 'Mail settings',
-            description: 'Configure providers and send test emails.',
+            title: t('settings.cards.mail.title'),
+            description: t('settings.cards.mail.description'),
             href: editMailSettings(),
             icon: Mail,
             visible: canManageMail,
         },
         {
-            title: 'Feature flags',
-            description: 'Control feature rollout by environment or user.',
+            title: t('settings.cards.feature_flags.title'),
+            description: t('settings.cards.feature_flags.description'),
             href: featureFlagsIndex(),
             icon: Flag,
             visible: canManageFlags,
@@ -49,12 +51,12 @@ export default function SettingsIndex() {
 
     return (
         <>
-            <Head title="Settings" />
+            <Head title={t('common.settings')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-4">
                 <Heading
-                    title="Admin settings"
-                    description="Configure system-level features and integrations."
+                    title={t('settings.title')}
+                    description={t('settings.description')}
                 />
 
                 <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -89,7 +91,7 @@ export default function SettingsIndex() {
                                             asChild
                                             className="w-full justify-center"
                                         >
-                                            <Link href={card.href}>Open</Link>
+                                            <Link href={card.href}>{t('common.open')}</Link>
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -104,7 +106,7 @@ export default function SettingsIndex() {
 SettingsIndex.layout = {
     breadcrumbs: [
         {
-            title: 'Settings',
+            title: 'common.settings',
             href: settingsIndex(),
         },
     ],

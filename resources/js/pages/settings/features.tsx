@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import { index as featureFlagsIndex } from '@/routes/feature-flags';
 
 type Flag = {
@@ -29,6 +30,7 @@ const environmentOptions = ['local', 'staging', 'production'];
 
 export default function FeatureFlags({ flags, roles }: Props) {
     const [editingFlagId, setEditingFlagId] = useState<number | null>(null);
+    const { t } = useTranslation();
 
     const editingFlag = useMemo(
         () => flags.find((f) => f.id === editingFlagId) ?? null,
@@ -133,18 +135,18 @@ export default function FeatureFlags({ flags, roles }: Props) {
 
     return (
         <>
-            <Head title="Feature flags" />
+            <Head title={t('settings.feature_flags.title')} />
 
-            <h1 className="sr-only">Feature flags</h1>
+            <h1 className="sr-only">{t('settings.feature_flags.title')}</h1>
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-start justify-between gap-4">
                     <Heading
-                        title="Feature flags"
-                        description="Control feature rollout by environment or audience."
+                        title={t('settings.feature_flags.title')}
+                        description={t('settings.feature_flags.description')}
                     />
                     <Button variant="outline" onClick={startCreate}>
-                        New flag
+                        {t('settings.feature_flags.actions.new')}
                     </Button>
                 </div>
 
@@ -161,32 +163,34 @@ export default function FeatureFlags({ flags, roles }: Props) {
                         <Card>
                             <CardHeader>
                                 <CardTitle>
-                                    {editingFlag ? 'Edit feature flag' : 'Create feature flag'}
+                                    {editingFlag
+                                        ? t('settings.feature_flags.form.edit_title')
+                                        : t('settings.feature_flags.form.create_title')}
                                 </CardTitle>
                                 <CardDescription>
-                                    Define the flag and choose who can access it.
+                                    {t('settings.feature_flags.form.description')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label htmlFor="key">Key</Label>
+                                    <Label htmlFor="key">{t('settings.feature_flags.fields.key')}</Label>
                                     <Input
                                         id="key"
                                         name="key"
                                         defaultValue={editingFlag?.key || ''}
-                                        placeholder="new_feature"
+                                        placeholder={t('settings.feature_flags.fields.key_placeholder')}
                                         required
                                     />
                                     <InputError message={errors.key} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="description">Description</Label>
+                                    <Label htmlFor="description">{t('settings.feature_flags.fields.description')}</Label>
                                     <Input
                                         id="description"
                                         name="description"
                                         defaultValue={editingFlag?.description || ''}
-                                        placeholder="Optional"
+                                        placeholder={t('settings.feature_flags.fields.description_placeholder')}
                                     />
                                     <InputError message={errors.description} />
                                 </div>
@@ -198,11 +202,11 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                         value="1"
                                         defaultChecked={editingFlag?.enabled || false}
                                     />
-                                    <Label htmlFor="enabled">Enabled</Label>
+                                    <Label htmlFor="enabled">{t('settings.feature_flags.fields.enabled')}</Label>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>Environments (optional)</Label>
+                                    <Label>{t('settings.feature_flags.fields.environments')}</Label>
                                     <div className="flex flex-wrap gap-4">
                                         {environmentOptions.map((env) => (
                                             <label
@@ -215,7 +219,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                                         toggleEnv(env, checked === true)
                                                     }
                                                 />
-                                                <span>{env}</span>
+                                                <span>{t(`settings.feature_flags.environments.${env}`)}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -226,7 +230,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label>Roles (optional)</Label>
+                                    <Label>{t('settings.feature_flags.fields.roles')}</Label>
                                     <div className="flex flex-wrap gap-4">
                                         {roles.map((role) => (
                                             <label
@@ -250,12 +254,12 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <Label>Users (optional)</Label>
+                                    <Label>{t('settings.feature_flags.fields.users')}</Label>
 
                                     <Input
                                         value={userSearch}
                                         onChange={(e) => setUserSearch(e.target.value)}
-                                        placeholder="Search users by name or email..."
+                                        placeholder={t('settings.feature_flags.fields.users_placeholder')}
                                     />
 
                                     {userResults.length > 0 && (
@@ -274,7 +278,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                                         </span>
                                                     </span>
                                                     <span className="text-xs text-muted-foreground">
-                                                        Add
+                                                        {t('common.add')}
                                                     </span>
                                                 </button>
                                             ))}
@@ -300,7 +304,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                                         variant="ghost"
                                                         onClick={() => removeUser(u.id)}
                                                     >
-                                                        Remove
+                                                        {t('common.remove')}
                                                     </Button>
                                                     <input type="hidden" name="users[]" value={u.id} />
                                                 </div>
@@ -313,7 +317,9 @@ export default function FeatureFlags({ flags, roles }: Props) {
 
                                 <div className="flex items-center gap-3">
                                     <Button disabled={processing}>
-                                        {editingFlag ? 'Update flag' : 'Create flag'}
+                                        {editingFlag
+                                            ? t('settings.feature_flags.actions.update')
+                                            : t('settings.feature_flags.actions.create')}
                                     </Button>
                                     {editingFlag && (
                                         <Button
@@ -321,7 +327,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                             variant="outline"
                                             onClick={startCreate}
                                         >
-                                            Cancel
+                                            {t('common.cancel')}
                                         </Button>
                                     )}
                                 </div>
@@ -332,15 +338,15 @@ export default function FeatureFlags({ flags, roles }: Props) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Existing flags</CardTitle>
+                        <CardTitle>{t('settings.feature_flags.list.title')}</CardTitle>
                         <CardDescription>
-                            Review and maintain current feature toggles.
+                            {t('settings.feature_flags.list.description')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         {flags.length === 0 ? (
                             <p className="text-sm text-muted-foreground">
-                                No feature flags yet.
+                                {t('settings.feature_flags.list.empty')}
                             </p>
                         ) : (
                             flags.map((flag) => (
@@ -354,7 +360,9 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                                 {flag.key}
                                             </span>
                                             <span className="text-xs text-muted-foreground">
-                                                {flag.enabled ? 'Enabled' : 'Disabled'}
+                                                {flag.enabled
+                                                    ? t('common.enabled')
+                                                    : t('common.disabled')}
                                             </span>
                                         </div>
                                         {flag.description && (
@@ -370,13 +378,13 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                             variant="outline"
                                             onClick={() => setEditingFlagId(flag.id)}
                                         >
-                                            Edit
+                                            {t('common.edit')}
                                         </Button>
                                         <Button
                                             size="sm"
                                             variant="destructive"
                                             onClick={() => {
-                                                if (confirm('Delete this feature flag?')) {
+                                                if (confirm(t('settings.feature_flags.actions.delete_confirm'))) {
                                                     router.delete(
                                                         FeatureFlagsController.destroy.url({
                                                             featureFlag: flag.id,
@@ -386,7 +394,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
                                                 }
                                             }}
                                         >
-                                            Delete
+                                            {t('common.delete')}
                                         </Button>
                                     </div>
                                 </div>
@@ -402,7 +410,7 @@ export default function FeatureFlags({ flags, roles }: Props) {
 FeatureFlags.layout = {
     breadcrumbs: [
         {
-            title: 'Feature flags',
+            title: 'settings.feature_flags.title',
             href: featureFlagsIndex(),
         },
     ],

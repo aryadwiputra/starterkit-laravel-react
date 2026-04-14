@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
 import { edit as editAppSettings } from '@/routes/app-settings';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
         logo_url: string | null;
         timezone: string;
         locale: string;
+        fallback_locale: string;
         maintenance_enabled: boolean;
         maintenance_message: string | null;
     };
@@ -27,6 +29,7 @@ export default function AppSettings({ settings }: Props) {
     const [logoPreview, setLogoPreview] = useState<string | null>(
         settings.logo_url,
     );
+    const { t } = useTranslation();
 
     function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -42,15 +45,15 @@ export default function AppSettings({ settings }: Props) {
 
     return (
         <>
-            <Head title="App settings" />
+            <Head title={t('settings.app.title')} />
 
-            <h1 className="sr-only">App settings</h1>
+            <h1 className="sr-only">{t('settings.app.title')}</h1>
 
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-start justify-between">
                     <Heading
-                        title="App settings"
-                        description="Control branding, locale, and availability."
+                        title={t('settings.app.title')}
+                        description={t('settings.app.description')}
                     />
                 </div>
 
@@ -64,14 +67,14 @@ export default function AppSettings({ settings }: Props) {
                         <>
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Branding</CardTitle>
-                                    <CardDescription>
-                                        Update the app name and logo shown to users.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="name">Application name</Label>
+                                <CardTitle>{t('settings.app.sections.branding.title')}</CardTitle>
+                                <CardDescription>
+                                        {t('settings.app.sections.branding.description')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <div className="grid gap-2">
+                                        <Label htmlFor="name">{t('settings.app.fields.name')}</Label>
                                         <Input
                                             id="name"
                                             name="name"
@@ -79,10 +82,10 @@ export default function AppSettings({ settings }: Props) {
                                             defaultValue={settings.name || name}
                                         />
                                         <InputError message={errors.name} />
-                                    </div>
+                                </div>
 
-                                    <div className="grid gap-2">
-                                        <Label>Logo</Label>
+                                <div className="grid gap-2">
+                                        <Label>{t('settings.app.fields.logo')}</Label>
                                         <div className="flex items-center gap-4">
                                             <button
                                                 type="button"
@@ -98,16 +101,13 @@ export default function AppSettings({ settings }: Props) {
                                                         />
                                                     ) : (
                                                         <span className="text-xs text-muted-foreground">
-                                                            No logo
+                                                            {t('settings.app.fields.logo_empty')}
                                                         </span>
                                                     )}
                                                 </div>
                                             </button>
                                             <div className="text-sm text-muted-foreground">
-                                                <p>
-                                                    Click to upload a new logo (JPG, PNG,
-                                                    WebP, SVG). Max 2MB.
-                                                </p>
+                                                <p>{t('settings.app.fields.logo_help')}</p>
                                             </div>
                                         </div>
                                         <input
@@ -126,76 +126,89 @@ export default function AppSettings({ settings }: Props) {
 
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Localization</CardTitle>
-                                    <CardDescription>
-                                        Define default timezone and language for new sessions.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-6">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="timezone">Timezone</Label>
-                                        <Input
-                                            id="timezone"
-                                            name="timezone"
-                                            defaultValue={settings.timezone}
-                                            placeholder="UTC"
-                                        />
-                                        <InputError message={errors.timezone} />
-                                    </div>
+                                <CardTitle>{t('settings.app.sections.localization.title')}</CardTitle>
+                                <CardDescription>
+                                        {t('settings.app.sections.localization.description')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <div className="grid gap-2">
+                                        <Label htmlFor="timezone">{t('settings.app.fields.timezone')}</Label>
+                                    <Input
+                                        id="timezone"
+                                        name="timezone"
+                                        defaultValue={settings.timezone}
+                                        placeholder={t('settings.app.fields.timezone_placeholder')}
+                                    />
+                                    <InputError message={errors.timezone} />
+                                </div>
 
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="locale">Default language</Label>
-                                        <Input
-                                            id="locale"
-                                            name="locale"
-                                            defaultValue={settings.locale}
-                                            placeholder="en"
-                                        />
-                                        <InputError message={errors.locale} />
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                <div className="grid gap-2">
+                                        <Label htmlFor="locale">{t('settings.app.fields.locale')}</Label>
+                                    <Input
+                                        id="locale"
+                                        name="locale"
+                                        defaultValue={settings.locale}
+                                        placeholder={t('settings.app.fields.locale_placeholder')}
+                                    />
+                                    <InputError message={errors.locale} />
+                                </div>
 
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Maintenance mode</CardTitle>
-                                    <CardDescription>
-                                        Pause public access while you perform updates.
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="flex items-center gap-2">
-                                        <Checkbox
-                                            id="maintenance_enabled"
-                                            name="maintenance_enabled"
-                                            value="1"
-                                            defaultChecked={settings.maintenance_enabled}
-                                        />
+                                <div className="grid gap-2">
+                                    <Label htmlFor="fallback_locale">
+                                        {t('settings.app.fields.fallback_locale')}
+                                    </Label>
+                                    <Input
+                                        id="fallback_locale"
+                                        name="fallback_locale"
+                                        defaultValue={settings.fallback_locale}
+                                        placeholder={t('settings.app.fields.fallback_locale_placeholder')}
+                                    />
+                                    <InputError message={errors.fallback_locale} />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>{t('settings.app.sections.maintenance.title')}</CardTitle>
+                                <CardDescription>
+                                        {t('settings.app.sections.maintenance.description')}
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="flex items-center gap-2">
+                                    <Checkbox
+                                        id="maintenance_enabled"
+                                        name="maintenance_enabled"
+                                        value="1"
+                                        defaultChecked={settings.maintenance_enabled}
+                                    />
                                         <Label htmlFor="maintenance_enabled">
-                                            Enable maintenance mode
+                                            {t('settings.app.fields.maintenance_enabled')}
                                         </Label>
-                                    </div>
+                                </div>
 
-                                    <div className="grid gap-2">
+                                <div className="grid gap-2">
                                         <Label htmlFor="maintenance_message">
-                                            Maintenance message (optional)
+                                            {t('settings.app.fields.maintenance_message')}
                                         </Label>
                                         <Input
                                             id="maintenance_message"
                                             name="maintenance_message"
                                             defaultValue={settings.maintenance_message || ''}
-                                            placeholder="We will be back soon."
+                                            placeholder={t('settings.app.fields.maintenance_placeholder')}
                                         />
                                         <InputError message={errors.maintenance_message} />
-                                    </div>
-                                </CardContent>
-                            </Card>
+                                </div>
+                            </CardContent>
+                        </Card>
 
-                            <div className="flex items-center gap-4">
-                                <Button disabled={processing}>
-                                    Save settings
-                                </Button>
-                            </div>
+                        <div className="flex items-center gap-4">
+                            <Button disabled={processing}>
+                                {t('common.save_settings')}
+                            </Button>
+                        </div>
                         </>
                     )}
                 </Form>
@@ -207,7 +220,7 @@ export default function AppSettings({ settings }: Props) {
 AppSettings.layout = {
     breadcrumbs: [
         {
-            title: 'App settings',
+            title: 'settings.app.title',
             href: editAppSettings(),
         },
     ],
