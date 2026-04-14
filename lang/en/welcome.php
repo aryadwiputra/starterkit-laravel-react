@@ -18,6 +18,10 @@ return [
         'side' => [
             'title' => 'Ready to build',
             'description' => 'A modular starter kit designed for speed and maintainability.',
+            'checks' => [
+                'Production-ready modules',
+                'i18n & localization support',
+            ],
             'stats' => [
                 'stack' => 'Tech stack',
                 'stack_value' => 'Laravel 13 · Inertia v3 · React 19 · Tailwind v4',
@@ -127,6 +131,9 @@ BASH,
         ],
     ],
     'usage' => [
+        'pro_tip' => [
+            'title' => 'Pro tip',
+        ],
         'flow' => [
             'title' => 'Suggested flow',
             'description' => 'A simple path to explore and start building.',

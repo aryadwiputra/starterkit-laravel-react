@@ -18,6 +18,10 @@ return [
         'side' => [
             'title' => 'Siap untuk develop',
             'description' => 'Starter kit modular yang fokus pada speed dan maintainability.',
+            'checks' => [
+                'Modul siap untuk production',
+                'Dukungan i18n & localization',
+            ],
             'stats' => [
                 'stack' => 'Tech stack',
                 'stack_value' => 'Laravel 13 · Inertia v3 · React 19 · Tailwind v4',
@@ -127,6 +131,9 @@ BASH,
         ],
     ],
     'usage' => [
+        'pro_tip' => [
+            'title' => 'Tips',
+        ],
         'flow' => [
             'title' => 'Alur yang disarankan',
             'description' => 'Jalur sederhana untuk eksplorasi dan mulai develop.',
