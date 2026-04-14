@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
+import { useTranslation } from '@/hooks/use-translation';
 import { edit } from '@/routes/profile';
 import { disable, enable } from '@/routes/two-factor';
 import { send } from '@/routes/verification';
@@ -35,6 +36,7 @@ export default function Profile({
     twoFactorEnabled = false,
 }: Props) {
     const { auth } = usePage().props;
+    const { t } = useTranslation();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
@@ -87,12 +89,12 @@ export default function Profile({
 
     return (
         <>
-            <Head title="Profile" />
+            <Head title={t('profile.title')} />
 
             <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4">
                 <Heading
-                    title="Profile"
-                    description="Manage your personal details and security settings."
+                    title={t('profile.title')}
+                    description={t('profile.description')}
                 />
 
                 <Form
@@ -104,14 +106,14 @@ export default function Profile({
                     {({ processing, errors }) => (
                         <Card>
                             <CardHeader>
-                                <CardTitle>Personal details</CardTitle>
+                                <CardTitle>{t('profile.sections.personal.title')}</CardTitle>
                                 <CardDescription>
-                                    Keep your name, email, and avatar up to date.
+                                    {t('profile.sections.personal.description')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="grid gap-2">
-                                    <Label>Avatar</Label>
+                                    <Label>{t('profile.fields.avatar')}</Label>
                                     <div className="flex items-center gap-4">
                                         <button
                                             type="button"
@@ -129,8 +131,8 @@ export default function Profile({
                                             </div>
                                         </button>
                                         <div className="text-sm text-muted-foreground">
-                                            <p>Click the avatar to upload a new photo.</p>
-                                            <p>JPG, PNG or WebP. Max 2MB.</p>
+                                            <p>{t('profile.fields.avatar_help')}</p>
+                                            <p>{t('profile.fields.avatar_help_2')}</p>
                                         </div>
                                     </div>
                                     <input
@@ -146,20 +148,20 @@ export default function Profile({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="name">{t('common.name')}</Label>
                                     <Input
                                         id="name"
                                         defaultValue={auth.user.name}
                                         name="name"
                                         required
                                         autoComplete="name"
-                                        placeholder="Full name"
+                                        placeholder={t('profile.fields.name_placeholder')}
                                     />
                                     <InputError message={errors.name} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email address</Label>
+                                    <Label htmlFor="email">{t('common.email')}</Label>
                                     <Input
                                         id="email"
                                         type="email"
@@ -167,7 +169,7 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder="Email address"
+                                        placeholder={t('profile.fields.email_placeholder')}
                                     />
                                     <InputError message={errors.email} />
                                 </div>
@@ -175,19 +177,19 @@ export default function Profile({
                                 {mustVerifyEmail && auth.user.email_verified_at === null && (
                                     <div>
                                         <p className="text-sm text-muted-foreground">
-                                            Your email address is unverified.{' '}
+                                            {t('profile.email_unverified')}{' '}
                                             <Link
                                                 href={send()}
                                                 as="button"
                                                 className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                             >
-                                                Click here to resend the verification email.
+                                                {t('profile.resend_verification')}
                                             </Link>
                                         </p>
 
                                         {status === 'verification-link-sent' && (
                                             <div className="mt-2 text-sm font-medium text-green-600">
-                                                A new verification link has been sent to your email address.
+                                                {t('profile.verification_sent')}
                                             </div>
                                         )}
                                     </div>
@@ -195,7 +197,7 @@ export default function Profile({
 
                                 <div className="flex items-center gap-4">
                                     <Button disabled={processing} data-test="update-profile-button">
-                                        Save changes
+                                        {t('common.save_changes')}
                                     </Button>
                                 </div>
                             </CardContent>
@@ -206,15 +208,15 @@ export default function Profile({
                 <section id="security" className="scroll-mt-24 space-y-6">
                     <Heading
                         variant="small"
-                        title="Security"
-                        description="Strengthen your account with a strong password and 2FA."
+                        title={t('profile.sections.security.title')}
+                        description={t('profile.sections.security.description')}
                     />
 
                     <Card className="max-w-3xl">
                         <CardHeader>
-                            <CardTitle>Update password</CardTitle>
+                            <CardTitle>{t('profile.sections.password.title')}</CardTitle>
                             <CardDescription>
-                                Use a long, unique password to keep your account secure.
+                                {t('profile.sections.password.description')}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -242,7 +244,7 @@ export default function Profile({
                                     <>
                                         <div className="grid gap-2">
                                             <Label htmlFor="current_password">
-                                                Current password
+                                                {t('profile.fields.current_password')}
                                             </Label>
 
                                             <PasswordInput
@@ -250,21 +252,21 @@ export default function Profile({
                                                 ref={currentPasswordInput}
                                                 name="current_password"
                                                 autoComplete="current-password"
-                                                placeholder="Current password"
+                                                placeholder={t('profile.fields.current_password')}
                                             />
 
                                             <InputError message={errors.current_password} />
                                         </div>
 
                                         <div className="grid gap-2">
-                                            <Label htmlFor="password">New password</Label>
+                                            <Label htmlFor="password">{t('profile.fields.new_password')}</Label>
 
                                             <PasswordInput
                                                 id="password"
                                                 ref={passwordInput}
                                                 name="password"
                                                 autoComplete="new-password"
-                                                placeholder="New password"
+                                                placeholder={t('profile.fields.new_password')}
                                             />
 
                                             <InputError message={errors.password} />
@@ -272,14 +274,14 @@ export default function Profile({
 
                                         <div className="grid gap-2">
                                             <Label htmlFor="password_confirmation">
-                                                Confirm password
+                                                {t('profile.fields.confirm_password')}
                                             </Label>
 
                                             <PasswordInput
                                                 id="password_confirmation"
                                                 name="password_confirmation"
                                                 autoComplete="new-password"
-                                                placeholder="Confirm password"
+                                                placeholder={t('profile.fields.confirm_password')}
                                             />
 
                                             <InputError message={errors.password_confirmation} />
@@ -287,7 +289,7 @@ export default function Profile({
 
                                         <div className="flex items-center gap-4">
                                             <Button disabled={processing} data-test="update-password-button">
-                                                Save password
+                                                {t('profile.actions.save_password')}
                                             </Button>
                                         </div>
                                     </>
@@ -299,16 +301,16 @@ export default function Profile({
                     {canManageTwoFactor && (
                         <Card className="max-w-3xl">
                             <CardHeader>
-                                <CardTitle>Two-factor authentication</CardTitle>
+                                <CardTitle>{t('profile.sections.two_factor.title')}</CardTitle>
                                 <CardDescription>
-                                    Add a second layer of security to your account.
+                                    {t('profile.sections.two_factor.description')}
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 {twoFactorEnabled ? (
                                     <div className="flex flex-col items-start justify-start space-y-4">
                                         <p className="text-sm text-muted-foreground">
-                                            You will be prompted for a secure, random pin during login, which you can retrieve from the TOTP app on your phone.
+                                            {t('profile.sections.two_factor.enabled_help')}
                                         </p>
 
                                         <div className="relative inline">
@@ -319,7 +321,7 @@ export default function Profile({
                                                         type="submit"
                                                         disabled={processing}
                                                     >
-                                                        Disable 2FA
+                                                        {t('profile.actions.disable_2fa')}
                                                     </Button>
                                                 )}
                                             </Form>
@@ -334,14 +336,14 @@ export default function Profile({
                                 ) : (
                                     <div className="flex flex-col items-start justify-start space-y-4">
                                         <p className="text-sm text-muted-foreground">
-                                            When you enable two-factor authentication, you will be prompted for a secure pin during login.
+                                            {t('profile.sections.two_factor.disabled_help')}
                                         </p>
 
                                         <div>
                                             {hasSetupData ? (
                                                 <Button onClick={() => setShowSetupModal(true)}>
                                                     <ShieldCheck />
-                                                    Continue setup
+                                                    {t('profile.actions.continue_setup')}
                                                 </Button>
                                             ) : (
                                                 <Form
@@ -350,7 +352,7 @@ export default function Profile({
                                                 >
                                                     {({ processing }) => (
                                                         <Button type="submit" disabled={processing}>
-                                                            Enable 2FA
+                                                            {t('profile.actions.enable_2fa')}
                                                         </Button>
                                                     )}
                                                 </Form>
@@ -387,7 +389,7 @@ export default function Profile({
 Profile.layout = {
     breadcrumbs: [
         {
-            title: 'Profile',
+            title: 'profile.title',
             href: edit(),
         },
     ],
