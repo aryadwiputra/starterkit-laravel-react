@@ -82,7 +82,7 @@ edit.form = editForm
 
 /**
 * @see \App\Http\Controllers\Settings\AppSettingsController::update
-* @see app/Http/Controllers/Settings/AppSettingsController.php:41
+* @see app/Http/Controllers/Settings/AppSettingsController.php:42
 * @route '/settings/app'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -97,7 +97,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Settings\AppSettingsController::update
-* @see app/Http/Controllers/Settings/AppSettingsController.php:41
+* @see app/Http/Controllers/Settings/AppSettingsController.php:42
 * @route '/settings/app'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Settings\AppSettingsController::update
-* @see app/Http/Controllers/Settings/AppSettingsController.php:41
+* @see app/Http/Controllers/Settings/AppSettingsController.php:42
 * @route '/settings/app'
 */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -116,7 +116,7 @@ update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
 
 /**
 * @see \App\Http\Controllers\Settings\AppSettingsController::update
-* @see app/Http/Controllers/Settings/AppSettingsController.php:41
+* @see app/Http/Controllers/Settings/AppSettingsController.php:42
 * @route '/settings/app'
 */
 const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -131,7 +131,7 @@ const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> =>
 
 /**
 * @see \App\Http\Controllers\Settings\AppSettingsController::update
-* @see app/Http/Controllers/Settings/AppSettingsController.php:41
+* @see app/Http/Controllers/Settings/AppSettingsController.php:42
 * @route '/settings/app'
 */
 updateForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
