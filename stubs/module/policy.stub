@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Policies;
+
+use App\Models\User;
+use App\Models\{{ model }};
+
+class {{ policy }}
+{
+    public function viewAny(User $user): bool
+    {
+        return $user->can('{{ model_singular }}.view');
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->can('{{ model_singular }}.create');
+    }
+
+    public function update(User $user, {{ model }} ${{ model_singular }}): bool
+    {
+        return $user->can('{{ model_singular }}.edit');
+    }
+
+    public function delete(User $user, {{ model }} ${{ model_singular }}): bool
+    {
+        return $user->can('{{ model_singular }}.delete');
+    }
+}
+

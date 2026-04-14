@@ -1,0 +1,58 @@
+import { Form, Head, Link } from '@inertiajs/react';
+import {{ controller }} from '@/actions/App/Http/Controllers/{{ controller }}';
+import Heading from '@/components/heading';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useTranslation } from '@/hooks/use-translation';
+
+export default function {{ model }}Create() {
+    const { t } = useTranslation();
+
+    return (
+        <>
+            <Head title={`Create {{ model }}`} />
+
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <Heading
+                    title={`Create {{ model }}`}
+                    description={`Create a new {{ model_singular }}.`}
+                />
+
+                <Form action={{{ controller }}.store.form()} method="post">
+                    {({ processing, errors }) => (
+                        <div className="space-y-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>{t('common.details')}</CardTitle>
+                                    <CardDescription>
+                                        {t('common.fill_required_fields')}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="title">{t('common.title')}</Label>
+                                        <Input id="title" name="title" />
+                                        <InputError message={errors.title} />
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <div className="flex items-center gap-4">
+                                <Button disabled={processing}>{t('common.save')}</Button>
+                                <Link href={`/${'{{ model_plural }}'}`}>
+                                    <Button type="button" variant="outline">
+                                        {t('common.cancel')}
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    )}
+                </Form>
+            </div>
+        </>
+    );
+}
+

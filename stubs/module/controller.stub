@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\{{ store_request }};
+use App\Http\Requests\{{ update_request }};
+use App\Models\{{ model }};
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class {{ controller }} extends Controller implements HasMiddleware
+{
+    /**
+     * Get the middleware that should be assigned to the controller.
+     *
+     * @return list<Middleware>
+     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth'),
+            new Middleware('verified'),
+        ];
+    }
+
+    public function index(Request $request): Response
+    {
+        $this->authorize('viewAny', {{ model }}::class);
+
+        $items = {{ model }}::query()
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return Inertia::render('{{ model_plural }}/index', [
+            'items' => $items,
+        ]);
+    }
+
+    public function create(): Response
+    {
+        $this->authorize('create', {{ model }}::class);
+
+        return Inertia::render('{{ model_plural }}/create');
+    }
+
+    public function store({{ store_request }} $request): RedirectResponse
+    {
+        $this->authorize('create', {{ model }}::class);
+
+        {{ model }}::create($request->validated());
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => '{{ model }} created.']);
+
+        return to_route('{{ model_plural }}.index');
+    }
+
+    public function edit({{ model }} ${{ model_singular }}): Response
+    {
+        $this->authorize('update', ${{ model_singular }});
+
+        return Inertia::render('{{ model_plural }}/edit', [
+            'item' => ${{ model_singular }},
+        ]);
+    }
+
+    public function update({{ update_request }} $request, {{ model }} ${{ model_singular }}): RedirectResponse
+    {
+        $this->authorize('update', ${{ model_singular }});
+
+        ${{ model_singular }}->update($request->validated());
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => '{{ model }} updated.']);
+
+        return to_route('{{ model_plural }}.index');
+    }
+
+    public function destroy(Request $request, {{ model }} ${{ model_singular }}): RedirectResponse
+    {
+        $this->authorize('delete', ${{ model_singular }});
+
+        ${{ model_singular }}->delete();
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => '{{ model }} deleted.']);
+
+        return to_route('{{ model_plural }}.index');
+    }
+}
+

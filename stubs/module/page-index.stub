@@ -1,0 +1,53 @@
+import { Head, router } from '@inertiajs/react';
+import { Plus } from 'lucide-react';
+import {{ controller }} from '@/actions/App/Http/Controllers/{{ controller }}';
+import { Button } from '@/components/ui/button';
+import { useCan } from '@/hooks/use-permission';
+import { useTranslation } from '@/hooks/use-translation';
+
+type Row = {
+    id: number;
+    created_at: string;
+};
+
+type Props = {
+    items: {
+        data: Row[];
+        links: unknown[];
+        meta: unknown;
+    };
+};
+
+export default function {{ model }}Index({ items }: Props) {
+    const canCreate = useCan('{{ model_singular }}.create');
+    const { t } = useTranslation();
+
+    return (
+        <>
+            <Head title={`{{ model }}s`} />
+
+            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-lg font-semibold">{{ model }}s</h1>
+                        <p className="text-sm text-muted-foreground">
+                            Manage your {{ model_plural }}.
+                        </p>
+                    </div>
+
+                    {canCreate ? (
+                        <Button onClick={() => router.visit({{ controller }}.create.url())}>
+                            <Plus className="mr-1 h-4 w-4" />
+                            {t('common.new')}
+                        </Button>
+                    ) : null}
+                </div>
+
+                <pre className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
+                    {JSON.stringify(items.data, null, 2)}
+                </pre>
+            </div>
+        </>
+    );
+}
+

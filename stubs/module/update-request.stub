@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class {{ update_request }} extends FormRequest
+{
+    public function authorize(): bool
+    {
+        $model = $this->route('{{ model_singular }}');
+
+        return $model ? ($this->user()?->can('update', $model) ?? false) : false;
+    }
+
+    /**
+     * @return array<string, ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'title' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+}
+
