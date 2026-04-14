@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -72,6 +73,7 @@ class RoleController extends Controller implements HasMiddleware
         ]);
 
         $role->syncPermissions($request->validated('permissions', []));
+        $this->forgetRolesCache();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.created')]);
 
@@ -111,6 +113,7 @@ class RoleController extends Controller implements HasMiddleware
         ]);
 
         $role->syncPermissions($request->validated('permissions', []));
+        $this->forgetRolesCache();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.updated')]);
 
@@ -129,6 +132,7 @@ class RoleController extends Controller implements HasMiddleware
         $this->authorize('delete', $role);
 
         $role->delete();
+        $this->forgetRolesCache();
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('roles.toast.deleted')]);
 
@@ -141,6 +145,22 @@ class RoleController extends Controller implements HasMiddleware
      * @return array<int, array{group: string, permissions: array<int, array{name: string, label: string}>}>
      */
     private function permissionGroups(): array
+    {
+        try {
+            return Cache::store('redis')
+                ->tags(['permissions'])
+                ->remember('permissions:groups', now()->addHour(), function (): array {
+                    return $this->buildPermissionGroups();
+                });
+        } catch (\Throwable) {
+            return $this->buildPermissionGroups();
+        }
+    }
+
+    /**
+     * @return array<int, array{group: string, permissions: array<int, array{name: string, label: string}>}>
+     */
+    private function buildPermissionGroups(): array
     {
         return Permission::query()
             ->orderBy('name')
@@ -165,5 +185,14 @@ class RoleController extends Controller implements HasMiddleware
             })
             ->values()
             ->all();
+    }
+
+    private function forgetRolesCache(): void
+    {
+        try {
+            Cache::store('redis')->tags(['roles'])->flush();
+        } catch (\Throwable) {
+            // Ignore cache failures.
+        }
     }
 }

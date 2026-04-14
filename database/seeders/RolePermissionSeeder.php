@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -55,6 +56,12 @@ class RolePermissionSeeder extends Seeder
 
         $this->createPermissions();
         $this->createRoles();
+
+        try {
+            Cache::store('redis')->tags(['roles', 'permissions'])->flush();
+        } catch (\Throwable) {
+            // Ignore cache failures.
+        }
     }
 
     /**
