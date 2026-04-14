@@ -85,6 +85,11 @@ class TranslationsResolver
             $modules[] = 'notifications';
         }
 
+        if (str_starts_with($routeName, 'media.')
+            || str_starts_with($routeName, 'media-uploads.')) {
+            $modules[] = 'media';
+        }
+
         return array_values(array_unique($modules));
     }
 }

@@ -7,6 +7,7 @@ return [
     'settings_app' => 'Aplikasi',
     'settings_mail' => 'Email',
     'settings_feature_flags' => 'Feature Flags',
+    'media' => 'Media',
     'profile' => 'Profil',
     'security' => 'Keamanan',
     'theme' => 'Tema',
