@@ -24,7 +24,7 @@ class StoreMediaUploadChunkRequest extends FormRequest
     {
         return [
             'index' => ['required', 'integer', 'min:0'],
-            'chunk' => ['required', 'file', 'max:6144'], // 6MB
+            'chunk' => ['required', 'file', 'max:2048'], // 2MB
         ];
     }
 }

@@ -88,6 +88,7 @@ class TranslationsResolver
         if (str_starts_with($routeName, 'media.')
             || str_starts_with($routeName, 'media-uploads.')) {
             $modules[] = 'media';
+            $modules[] = 'datatable';
         }
 
         return array_values(array_unique($modules));

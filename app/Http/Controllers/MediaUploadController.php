@@ -18,7 +18,10 @@ use Illuminate\Support\Str;
 
 class MediaUploadController extends Controller implements HasMiddleware
 {
-    private const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB
+    /**
+     * Keep this conservative to work with common PHP defaults (e.g. 2MB upload_max_filesize).
+     */
+    private const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB
 
     private const TEMP_ROOT = 'tmp/media-uploads';
 
