@@ -35,6 +35,11 @@ class ApplyAppSettings
             App::setLocale($locale);
         }
 
+        $fallbackLocale = settings('app.fallback_locale');
+        if (is_string($fallbackLocale) && $fallbackLocale !== '') {
+            config(['app.fallback_locale' => $fallbackLocale]);
+        }
+
         $this->mailSettingsApplier->apply();
 
         return $next($request);

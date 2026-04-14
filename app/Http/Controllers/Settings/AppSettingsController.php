@@ -29,6 +29,7 @@ class AppSettingsController extends Controller
                 'logo_url' => $logoUrl,
                 'timezone' => settings('app.timezone', config('app.timezone')),
                 'locale' => settings('app.locale', config('app.locale')),
+                'fallback_locale' => settings('app.fallback_locale', config('app.fallback_locale')),
                 'maintenance_enabled' => (bool) settings('app.maintenance.enabled', false),
                 'maintenance_message' => settings('app.maintenance.message'),
             ],
@@ -43,6 +44,7 @@ class AppSettingsController extends Controller
         $settings->set('app.name', $request->validated('name'), 'string');
         $settings->set('app.timezone', $request->validated('timezone'), 'string');
         $settings->set('app.locale', $request->validated('locale'), 'string');
+        $settings->set('app.fallback_locale', $request->validated('fallback_locale'), 'string');
         $settings->set('app.maintenance.enabled', (bool) $request->validated('maintenance_enabled', false), 'bool');
         $settings->set('app.maintenance.message', $request->validated('maintenance_message'), 'string');
 
@@ -56,7 +58,7 @@ class AppSettingsController extends Controller
             $settings->set('app.logo_path', $path, 'string');
         }
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('App settings updated.')]);
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('settings.toast.app_updated')]);
 
         return back();
     }

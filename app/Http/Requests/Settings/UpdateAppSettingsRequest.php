@@ -29,6 +29,7 @@ class UpdateAppSettingsRequest extends FormRequest
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'timezone' => ['nullable', 'string', Rule::in(DateTimeZone::listIdentifiers())],
             'locale' => ['nullable', 'string', 'alpha_dash', 'max:15'],
+            'fallback_locale' => ['nullable', 'string', 'alpha_dash', 'max:15'],
             'maintenance_enabled' => ['nullable', 'boolean'],
             'maintenance_message' => ['nullable', 'string', 'max:500'],
         ];
