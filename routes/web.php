@@ -14,6 +14,9 @@ Route::inertia('/', 'welcome', [
 
 Route::post('locale', LocaleController::class)->name('locale.update');
 
+Route::get('api/docs', fn () => redirect()->route('scramble.docs.ui'))->name('api.docs');
+Route::get('api/docs.json', fn () => redirect()->route('scramble.docs.document'))->name('api.docs.document');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 
