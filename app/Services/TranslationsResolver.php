@@ -68,6 +68,7 @@ class TranslationsResolver
 
         if ($routeName === 'home') {
             $modules[] = 'welcome';
+            $modules[] = 'auth';
         }
 
         if (str_starts_with($routeName, 'password.')
