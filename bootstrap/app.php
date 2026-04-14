@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\ApplyAppSettings;
+use App\Http\Middleware\ApplyLocale;
 use App\Http\Middleware\CheckDatabaseMaintenance;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleAppearance::class,
             ApplyAppSettings::class,
+            ApplyLocale::class,
             CheckDatabaseMaintenance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
