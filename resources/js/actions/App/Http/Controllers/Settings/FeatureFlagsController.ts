@@ -222,7 +222,7 @@ store.form = storeForm
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
 * @route '/settings/features/{featureFlag}'
 */
-export const update = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -237,7 +237,7 @@ update.definition = {
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
 * @route '/settings/features/{featureFlag}'
 */
-update.url = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+update.url = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { featureFlag: args }
     }
@@ -270,7 +270,7 @@ update.url = (args: { featureFlag: number | { id: number } } | [featureFlag: num
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
 * @route '/settings/features/{featureFlag}'
 */
-update.put = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -280,7 +280,7 @@ update.put = (args: { featureFlag: number | { id: number } } | [featureFlag: num
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
 * @route '/settings/features/{featureFlag}'
 */
-const updateForm = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const updateForm = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -295,7 +295,7 @@ const updateForm = (args: { featureFlag: number | { id: number } } | [featureFla
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:77
 * @route '/settings/features/{featureFlag}'
 */
-updateForm.put = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+updateForm.put = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: update.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'PUT',
@@ -312,7 +312,7 @@ update.form = updateForm
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
 * @route '/settings/features/{featureFlag}'
 */
-export const destroy = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -327,7 +327,7 @@ destroy.definition = {
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
 * @route '/settings/features/{featureFlag}'
 */
-destroy.url = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { featureFlag: args }
     }
@@ -360,7 +360,7 @@ destroy.url = (args: { featureFlag: number | { id: number } } | [featureFlag: nu
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
 * @route '/settings/features/{featureFlag}'
 */
-destroy.delete = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -370,7 +370,7 @@ destroy.delete = (args: { featureFlag: number | { id: number } } | [featureFlag:
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
 * @route '/settings/features/{featureFlag}'
 */
-const destroyForm = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -385,7 +385,7 @@ const destroyForm = (args: { featureFlag: number | { id: number } } | [featureFl
 * @see app/Http/Controllers/Settings/FeatureFlagsController.php:99
 * @route '/settings/features/{featureFlag}'
 */
-destroyForm.delete = (args: { featureFlag: number | { id: number } } | [featureFlag: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { featureFlag: string | number | { id: string | number } } | [featureFlag: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',

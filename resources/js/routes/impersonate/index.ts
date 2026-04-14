@@ -4,7 +4,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 * @see app/Http/Controllers/ImpersonationController.php:16
 * @route '/impersonate/{user}'
 */
-export const start = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const start = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: start.url(args, options),
     method: 'post',
 })
@@ -19,7 +19,7 @@ start.definition = {
 * @see app/Http/Controllers/ImpersonationController.php:16
 * @route '/impersonate/{user}'
 */
-start.url = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+start.url = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { user: args }
     }
@@ -52,7 +52,7 @@ start.url = (args: { user: number | { id: number } } | [user: number | { id: num
 * @see app/Http/Controllers/ImpersonationController.php:16
 * @route '/impersonate/{user}'
 */
-start.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+start.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: start.url(args, options),
     method: 'post',
 })
@@ -62,7 +62,7 @@ start.post = (args: { user: number | { id: number } } | [user: number | { id: nu
 * @see app/Http/Controllers/ImpersonationController.php:16
 * @route '/impersonate/{user}'
 */
-const startForm = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const startForm = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: start.url(args, options),
     method: 'post',
 })
@@ -72,7 +72,7 @@ const startForm = (args: { user: number | { id: number } } | [user: number | { i
 * @see app/Http/Controllers/ImpersonationController.php:16
 * @route '/impersonate/{user}'
 */
-startForm.post = (args: { user: number | { id: number } } | [user: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+startForm.post = (args: { user: string | number | { id: string | number } } | [user: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: start.url(args, options),
     method: 'post',
 })

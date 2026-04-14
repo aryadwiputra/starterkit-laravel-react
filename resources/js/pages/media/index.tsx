@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useTranslation } from '@/hooks/use-translation';
+import { destroy as destroyMedia, download as downloadMedia, index as mediaIndex, store as storeMedia } from '@/routes/media';
+import { chunk, complete, destroy as destroyUpload, store as storeUpload } from '@/routes/media-uploads';
 import type { DataTableColumn, PaginatedData, RowAction } from '@/types/datatable';
 
 type MediaAssetRow = {
@@ -101,7 +103,7 @@ export default function MediaIndex({ assets }: Props) {
             label: t('media.actions.download'),
             icon: <Download className="h-4 w-4" />,
             onClick: (asset) => {
-                window.location.href = `/media/${asset.id}/download`;
+                window.location.href = downloadMedia(asset.id).url;
             },
         },
         {
@@ -114,7 +116,7 @@ export default function MediaIndex({ assets }: Props) {
                     return;
                 }
 
-                router.delete(`/media/${asset.id}`, { preserveScroll: true });
+                router.delete(destroyMedia(asset.id).url, { preserveScroll: true });
             },
         },
     ];
@@ -123,7 +125,7 @@ export default function MediaIndex({ assets }: Props) {
         const csrf =
             document.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content || '';
 
-        const initRes = await fetch('/media/uploads', {
+        const initRes = await fetch(storeUpload().url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -158,7 +160,7 @@ export default function MediaIndex({ assets }: Props) {
                 form.append('index', String(index));
                 form.append('chunk', blob, fileToUpload.name);
 
-                const chunkRes = await fetch(`/media/uploads/${init.upload_id}/chunk`, {
+                const chunkRes = await fetch(chunk(init.upload_id).url, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': csrf,
@@ -174,7 +176,7 @@ export default function MediaIndex({ assets }: Props) {
                 setProgress(Math.round(((index + 1) / init.total_chunks) * 100));
             }
 
-            const completeRes = await fetch(`/media/uploads/${init.upload_id}/complete`, {
+            const completeRes = await fetch(complete(init.upload_id).url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -188,7 +190,7 @@ export default function MediaIndex({ assets }: Props) {
                 throw new Error(await completeRes.text());
             }
         } catch (e) {
-            await fetch(`/media/uploads/${init.upload_id}`, {
+            await fetch(destroyUpload(init.upload_id).url, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': csrf,
@@ -216,8 +218,8 @@ export default function MediaIndex({ assets }: Props) {
             } else {
                 let ok = true;
                 await new Promise<void>((resolve) => {
-                    router.post(
-                        '/media',
+                router.post(
+                        storeMedia().url,
                         { title: title || null, file },
                         {
                             preserveScroll: true,
@@ -336,7 +338,7 @@ export default function MediaIndex({ assets }: Props) {
                             rowActions={rowActions}
                             searchable={false}
                             exportable={false}
-                            routePrefix="/media"
+                            routePrefix={mediaIndex().url}
                         />
                     </CardContent>
                 </Card>

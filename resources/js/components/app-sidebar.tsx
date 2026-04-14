@@ -26,6 +26,7 @@ import { index as featureFlagsIndex } from '@/routes/feature-flags';
 import { edit as editMailSettings } from '@/routes/mail-settings';
 import { index as settingsIndex } from '@/routes/settings';
 import { index as usersIndex } from '@/routes/users';
+import { index as mediaIndex } from '@/routes/media';
 import type { NavItem } from '@/types';
 
 export function AppSidebar() {
@@ -53,7 +54,7 @@ export function AppSidebar() {
             ? [
                   {
                       title: t('common.media'),
-                      href: '/media',
+                      href: mediaIndex(),
                       icon: UploadCloud,
                   },
               ]

@@ -5,6 +5,8 @@ import ImpersonationController from './ImpersonationController'
 import ColumnPreferenceController from './ColumnPreferenceController'
 import Settings from './Settings'
 import NotificationsController from './NotificationsController'
+import MediaAssetController from './MediaAssetController'
+import MediaUploadController from './MediaUploadController'
 
 const Controllers = {
     LocaleController: Object.assign(LocaleController, LocaleController),
@@ -14,6 +16,8 @@ const Controllers = {
     ColumnPreferenceController: Object.assign(ColumnPreferenceController, ColumnPreferenceController),
     Settings: Object.assign(Settings, Settings),
     NotificationsController: Object.assign(NotificationsController, NotificationsController),
+    MediaAssetController: Object.assign(MediaAssetController, MediaAssetController),
+    MediaUploadController: Object.assign(MediaUploadController, MediaUploadController),
 }
 
 export default Controllers
