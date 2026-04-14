@@ -5,6 +5,7 @@ test('landing page includes required translation modules', function () {
         ->assertOk()
         ->assertInertia(fn ($page) => $page
             ->component('welcome')
+            ->has('canRegister')
             ->has('translations.common')
             ->has('translations.welcome')
             ->has('translations.auth')
