@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\User;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
@@ -53,7 +56,32 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Seed roles/permissions once and act as the given role.
+ */
+function asRole(string $role, array $attributes = []): User
 {
-    // ..
+    Artisan::call('db:seed', ['--class' => RolePermissionSeeder::class]);
+
+    $user = User::factory()->create($attributes);
+    $user->assignRole($role);
+
+    test()->actingAs($user);
+
+    return $user;
+}
+
+function asAdmin(array $attributes = []): User
+{
+    return asRole('admin', $attributes);
+}
+
+function asSuperAdmin(array $attributes = []): User
+{
+    return asRole('super-admin', $attributes);
+}
+
+function asUser(array $attributes = []): User
+{
+    return asRole('user', $attributes);
 }
