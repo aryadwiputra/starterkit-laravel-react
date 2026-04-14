@@ -48,10 +48,13 @@ class TranslationsResolver
 
         if (str_starts_with($routeName, 'users.')) {
             $modules[] = 'users';
+            $modules[] = 'datatable';
         }
 
         if (str_starts_with($routeName, 'roles.')) {
             $modules[] = 'roles';
+            $modules[] = 'users';
+            $modules[] = 'datatable';
         }
 
         if (str_starts_with($routeName, 'profile.')) {
