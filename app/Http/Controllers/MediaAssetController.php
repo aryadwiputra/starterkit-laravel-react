@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DataTableRequest;
 use App\Http\Requests\StoreMediaAssetRequest;
 use App\Models\MediaAsset;
+use App\Services\DataTableService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,18 +31,22 @@ class MediaAssetController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request): InertiaResponse
+    public function index(DataTableRequest $request, DataTableService $dataTable): InertiaResponse
     {
         $this->authorize('viewAny', MediaAsset::class);
 
-        $assets = MediaAsset::query()
+        $query = MediaAsset::query()
             ->with([
                 'uploadedBy:id,name',
                 'media',
             ])
-            ->latest()
-            ->paginate(24)
-            ->through(fn (MediaAsset $asset): array => $this->assetToArray($asset));
+            ->latest();
+
+        $assets = $dataTable->apply(
+            query: $query,
+            request: $request,
+            searchableColumns: ['title', 'uploadedBy.name', 'media.name'],
+        )->through(fn (MediaAsset $asset): array => $this->assetToArray($asset));
 
         return Inertia::render('media/index', [
             'assets' => $assets,

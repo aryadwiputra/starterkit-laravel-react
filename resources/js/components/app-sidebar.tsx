@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, ChevronDown, FolderGit2, LayoutGrid, Settings, Users } from 'lucide-react';
+import { BookOpen, ChevronDown, FolderGit2, LayoutGrid, Settings, UploadCloud, Users } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -46,6 +46,15 @@ export function AppSidebar() {
                       title: t('common.user_management'),
                       href: usersIndex(),
                       icon: Users,
+                  },
+              ]
+            : []),
+        ...(userPermissions.includes('media.manage')
+            ? [
+                  {
+                      title: t('common.media'),
+                      href: '/media',
+                      icon: UploadCloud,
                   },
               ]
             : []),
