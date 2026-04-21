@@ -60,7 +60,7 @@ store.form = storeForm
 * @see app/Http/Controllers/MediaUploadController.php:85
 * @route '/media/uploads/{upload}/chunk'
 */
-export const chunk = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const chunk = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: chunk.url(args, options),
     method: 'post',
 })
@@ -75,7 +75,7 @@ chunk.definition = {
 * @see app/Http/Controllers/MediaUploadController.php:85
 * @route '/media/uploads/{upload}/chunk'
 */
-chunk.url = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+chunk.url = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { upload: args }
     }
@@ -108,7 +108,7 @@ chunk.url = (args: { upload: string | number | { id: string | number } } | [uplo
 * @see app/Http/Controllers/MediaUploadController.php:85
 * @route '/media/uploads/{upload}/chunk'
 */
-chunk.post = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+chunk.post = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: chunk.url(args, options),
     method: 'post',
 })
@@ -118,7 +118,7 @@ chunk.post = (args: { upload: string | number | { id: string | number } } | [upl
 * @see app/Http/Controllers/MediaUploadController.php:85
 * @route '/media/uploads/{upload}/chunk'
 */
-const chunkForm = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const chunkForm = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: chunk.url(args, options),
     method: 'post',
 })
@@ -128,7 +128,7 @@ const chunkForm = (args: { upload: string | number | { id: string | number } } |
 * @see app/Http/Controllers/MediaUploadController.php:85
 * @route '/media/uploads/{upload}/chunk'
 */
-chunkForm.post = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+chunkForm.post = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: chunk.url(args, options),
     method: 'post',
 })
@@ -140,7 +140,7 @@ chunk.form = chunkForm
 * @see app/Http/Controllers/MediaUploadController.php:106
 * @route '/media/uploads/{upload}/complete'
 */
-export const complete = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const complete = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: complete.url(args, options),
     method: 'post',
 })
@@ -155,7 +155,7 @@ complete.definition = {
 * @see app/Http/Controllers/MediaUploadController.php:106
 * @route '/media/uploads/{upload}/complete'
 */
-complete.url = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+complete.url = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { upload: args }
     }
@@ -188,7 +188,7 @@ complete.url = (args: { upload: string | number | { id: string | number } } | [u
 * @see app/Http/Controllers/MediaUploadController.php:106
 * @route '/media/uploads/{upload}/complete'
 */
-complete.post = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+complete.post = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: complete.url(args, options),
     method: 'post',
 })
@@ -198,7 +198,7 @@ complete.post = (args: { upload: string | number | { id: string | number } } | [
 * @see app/Http/Controllers/MediaUploadController.php:106
 * @route '/media/uploads/{upload}/complete'
 */
-const completeForm = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const completeForm = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: complete.url(args, options),
     method: 'post',
 })
@@ -208,7 +208,7 @@ const completeForm = (args: { upload: string | number | { id: string | number } 
 * @see app/Http/Controllers/MediaUploadController.php:106
 * @route '/media/uploads/{upload}/complete'
 */
-completeForm.post = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+completeForm.post = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: complete.url(args, options),
     method: 'post',
 })
@@ -220,7 +220,7 @@ complete.form = completeForm
 * @see app/Http/Controllers/MediaUploadController.php:135
 * @route '/media/uploads/{upload}'
 */
-export const destroy = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -235,7 +235,7 @@ destroy.definition = {
 * @see app/Http/Controllers/MediaUploadController.php:135
 * @route '/media/uploads/{upload}'
 */
-destroy.url = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { upload: args }
     }
@@ -268,7 +268,7 @@ destroy.url = (args: { upload: string | number | { id: string | number } } | [up
 * @see app/Http/Controllers/MediaUploadController.php:135
 * @route '/media/uploads/{upload}'
 */
-destroy.delete = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -278,7 +278,7 @@ destroy.delete = (args: { upload: string | number | { id: string | number } } | 
 * @see app/Http/Controllers/MediaUploadController.php:135
 * @route '/media/uploads/{upload}'
 */
-const destroyForm = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -293,7 +293,7 @@ const destroyForm = (args: { upload: string | number | { id: string | number } }
 * @see app/Http/Controllers/MediaUploadController.php:135
 * @route '/media/uploads/{upload}'
 */
-destroyForm.delete = (args: { upload: string | number | { id: string | number } } | [upload: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { upload: string | { id: string } } | [upload: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',

@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::index
-* @see app/Http/Controllers/MediaAssetController.php:34
+* @see app/Http/Controllers/MediaAssetController.php:35
 * @route '/media'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::store
-* @see app/Http/Controllers/MediaAssetController.php:56
+* @see app/Http/Controllers/MediaAssetController.php:57
 * @route '/media'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +97,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::store
-* @see app/Http/Controllers/MediaAssetController.php:56
+* @see app/Http/Controllers/MediaAssetController.php:57
 * @route '/media'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::store
-* @see app/Http/Controllers/MediaAssetController.php:56
+* @see app/Http/Controllers/MediaAssetController.php:57
 * @route '/media'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -116,7 +116,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::store
-* @see app/Http/Controllers/MediaAssetController.php:56
+* @see app/Http/Controllers/MediaAssetController.php:57
 * @route '/media'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -126,7 +126,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::store
-* @see app/Http/Controllers/MediaAssetController.php:56
+* @see app/Http/Controllers/MediaAssetController.php:57
 * @route '/media'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -138,10 +138,10 @@ store.form = storeForm
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::destroy
-* @see app/Http/Controllers/MediaAssetController.php:74
+* @see app/Http/Controllers/MediaAssetController.php:75
 * @route '/media/{mediaAsset}'
 */
-export const destroy = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -153,10 +153,10 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::destroy
-* @see app/Http/Controllers/MediaAssetController.php:74
+* @see app/Http/Controllers/MediaAssetController.php:75
 * @route '/media/{mediaAsset}'
 */
-destroy.url = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { mediaAsset: args }
     }
@@ -186,20 +186,20 @@ destroy.url = (args: { mediaAsset: string | number | { id: string | number } } |
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::destroy
-* @see app/Http/Controllers/MediaAssetController.php:74
+* @see app/Http/Controllers/MediaAssetController.php:75
 * @route '/media/{mediaAsset}'
 */
-destroy.delete = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::destroy
-* @see app/Http/Controllers/MediaAssetController.php:74
+* @see app/Http/Controllers/MediaAssetController.php:75
 * @route '/media/{mediaAsset}'
 */
-const destroyForm = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -211,10 +211,10 @@ const destroyForm = (args: { mediaAsset: string | number | { id: string | number
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::destroy
-* @see app/Http/Controllers/MediaAssetController.php:74
+* @see app/Http/Controllers/MediaAssetController.php:75
 * @route '/media/{mediaAsset}'
 */
-destroyForm.delete = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -228,10 +228,10 @@ destroy.form = destroyForm
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-export const download = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const download = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: download.url(args, options),
     method: 'get',
 })
@@ -243,10 +243,10 @@ download.definition = {
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-download.url = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+download.url = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { mediaAsset: args }
     }
@@ -276,50 +276,50 @@ download.url = (args: { mediaAsset: string | number | { id: string | number } } 
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-download.get = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+download.get = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: download.url(args, options),
     method: 'get',
 })
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-download.head = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+download.head = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: download.url(args, options),
     method: 'head',
 })
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-const downloadForm = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const downloadForm = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: download.url(args, options),
     method: 'get',
 })
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-downloadForm.get = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+downloadForm.get = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: download.url(args, options),
     method: 'get',
 })
 
 /**
 * @see \App\Http\Controllers\MediaAssetController::download
-* @see app/Http/Controllers/MediaAssetController.php:85
+* @see app/Http/Controllers/MediaAssetController.php:86
 * @route '/media/{mediaAsset}/download'
 */
-downloadForm.head = (args: { mediaAsset: string | number | { id: string | number } } | [mediaAsset: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+downloadForm.head = (args: { mediaAsset: number | { id: number } } | [mediaAsset: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: download.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
