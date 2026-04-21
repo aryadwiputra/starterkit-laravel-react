@@ -1,6 +1,5 @@
 import { Link } from '@inertiajs/react';
 import AppLogoIcon from '@/components/app-logo-icon';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useTranslation } from '@/hooks/use-translation';
 import AuthControls from '@/layouts/auth/auth-controls';
 import { home } from '@/routes';
@@ -22,8 +21,8 @@ export default function AuthSimpleLayout({
                     <AuthControls />
                 </div>
 
-                <Card className="py-0">
-                    <CardHeader className="gap-3">
+                <div className="space-y-8">
+                    <div className="flex flex-col items-center gap-3 text-center">
                         <Link
                             href={home()}
                             className="flex items-center justify-center gap-2 font-medium"
@@ -33,7 +32,7 @@ export default function AuthSimpleLayout({
                             </div>
                         </Link>
 
-                        <div className="space-y-1 text-center">
+                        <div className="space-y-1">
                             <h1 className="text-xl font-semibold tracking-tight">
                                 {titleText}
                             </h1>
@@ -41,12 +40,10 @@ export default function AuthSimpleLayout({
                                 {descriptionText}
                             </p>
                         </div>
-                    </CardHeader>
+                    </div>
 
-                    <CardContent className="space-y-6">
-                        {children}
-                    </CardContent>
-                </Card>
+                    <div className="space-y-6">{children}</div>
+                </div>
             </div>
         </div>
     );

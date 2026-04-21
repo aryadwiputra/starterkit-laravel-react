@@ -1,7 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { CheckCircle2 } from 'lucide-react';
 import AppLogoIcon from '@/components/app-logo-icon';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useTranslation } from '@/hooks/use-translation';
 import AuthControls from '@/layouts/auth/auth-controls';
 import { home } from '@/routes';
@@ -89,20 +88,18 @@ export default function AuthSplitLayout({
                         </div>
                     </div>
 
-                    <Card className="py-0">
-                        <CardHeader className="gap-1.5">
+                    <div className="space-y-8">
+                        <div className="space-y-1.5">
                             <h1 className="text-xl font-semibold tracking-tight">
                                 {titleText}
                             </h1>
                             <p className="text-sm text-muted-foreground">
                                 {descriptionText}
                             </p>
-                        </CardHeader>
+                        </div>
 
-                        <CardContent className="space-y-6">
-                            {children}
-                        </CardContent>
-                    </Card>
+                        <div className="space-y-6">{children}</div>
+                    </div>
                 </div>
             </main>
         </div>
