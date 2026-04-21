@@ -43,4 +43,14 @@ return [
         'recovery_placeholder' => 'Masukkan kode pemulihan',
         'toggle_prefix' => 'atau Anda bisa',
     ],
+    'layout' => [
+        'headline' => 'Bangun lebih cepat dengan starter kit siap produksi',
+        'subheadline' => 'Auth, role & permission, settings, media, dan lainnya — siap dipakai sejak hari pertama.',
+        'bullets' => [
+            'fast_setup' => 'Stack modern: Laravel + Inertia + React + Tailwind + shadcn/ui.',
+            'secure_by_default' => 'Aman dari awal: verifikasi, 2FA, rate limit, dan audit.',
+            'modern_ui' => 'UI/UX bersih dengan komponen dan spacing yang konsisten.',
+        ],
+        'footer_note' => 'Tips: Kamu bisa ganti bahasa dan tema sebelum masuk.',
+    ],
 ];

@@ -43,4 +43,14 @@ return [
         'recovery_placeholder' => 'Enter recovery code',
         'toggle_prefix' => 'or you can',
     ],
+    'layout' => [
+        'headline' => 'Build faster with a production-ready starter kit',
+        'subheadline' => 'Authentication, roles & permissions, settings, media, and more — ready to ship from day one.',
+        'bullets' => [
+            'fast_setup' => 'Modern stack: Laravel + Inertia + React + Tailwind + shadcn/ui.',
+            'secure_by_default' => 'Secure by default: verification, 2FA, rate limiting, and audits.',
+            'modern_ui' => 'Clean UI/UX with consistent components and spacing.',
+        ],
+        'footer_note' => 'Tip: You can change language and theme before signing in.',
+    ],
 ];
