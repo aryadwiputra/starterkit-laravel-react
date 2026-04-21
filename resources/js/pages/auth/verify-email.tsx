@@ -1,6 +1,7 @@
 // Components
 import { Form, Head } from '@inertiajs/react';
 import TextLink from '@/components/text-link';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { useTranslation } from '@/hooks/use-translation';
@@ -15,15 +16,22 @@ export default function VerifyEmail({ status }: { status?: string }) {
             <Head title={t('auth.verify_email_title')} />
 
             {status === 'verification-link-sent' && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {t('auth.verify_email_sent')}
-                </div>
+                <Alert>
+                    <AlertTitle>{t('common.status')}</AlertTitle>
+                    <AlertDescription>
+                        {t('auth.verify_email_sent')}
+                    </AlertDescription>
+                </Alert>
             )}
 
             <Form {...send.form()} className="space-y-6 text-center">
                 {({ processing }) => (
                     <>
-                        <Button disabled={processing} variant="secondary">
+                        <Button
+                            disabled={processing}
+                            variant="secondary"
+                            className="w-full"
+                        >
                             {processing && <Spinner />}
                             {t('auth.resend_verification')}
                         </Button>

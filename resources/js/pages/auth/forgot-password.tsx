@@ -3,6 +3,7 @@ import { Form, Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,9 +19,10 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <Head title={t('auth.forgot_password_title')} />
 
             {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
+                <Alert>
+                    <AlertTitle>{t('common.status')}</AlertTitle>
+                    <AlertDescription>{status}</AlertDescription>
+                </Alert>
             )}
 
             <div className="space-y-6">

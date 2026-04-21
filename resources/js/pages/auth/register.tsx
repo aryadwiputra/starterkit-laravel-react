@@ -37,10 +37,7 @@ export default function Register() {
                                     name="name"
                                     placeholder={t('auth.name_placeholder')}
                                 />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
+                                <InputError message={errors.name} />
                             </div>
 
                             <div className="grid gap-2">

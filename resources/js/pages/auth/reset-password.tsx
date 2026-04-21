@@ -35,12 +35,10 @@ export default function ResetPassword({ token, email }: Props) {
                                 name="email"
                                 autoComplete="email"
                                 value={email}
-                                className="mt-1 block w-full"
                                 readOnly
                             />
                             <InputError
                                 message={errors.email}
-                                className="mt-2"
                             />
                         </div>
 
@@ -50,7 +48,6 @@ export default function ResetPassword({ token, email }: Props) {
                                 id="password"
                                 name="password"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
                                 autoFocus
                                 placeholder={t('auth.password_placeholder')}
                             />
@@ -65,12 +62,10 @@ export default function ResetPassword({ token, email }: Props) {
                                 id="password_confirmation"
                                 name="password_confirmation"
                                 autoComplete="new-password"
-                                className="mt-1 block w-full"
                                 placeholder={t('auth.confirm_password_placeholder')}
                             />
                             <InputError
                                 message={errors.password_confirmation}
-                                className="mt-2"
                             />
                         </div>
 
